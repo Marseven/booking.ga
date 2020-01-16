@@ -1,0 +1,68 @@
+	/*
+  	Flaticon icon font: Flaticon
+  	Creation date: 23/09/2019 05:00
+  	*/
+
+@font-face {
+  font-family: "Flaticon";
+  src: url("../fonts/Flaticon.eot");
+  src: url("../fonts/Flaticond41d.eot?#iefix") format("embedded-opentype"),
+       url("../fonts/Flaticon.woff2") format("woff2"),
+       url("../fonts/Flaticon.woff") format("woff"),
+       url("../fonts/Flaticon.ttf") format("truetype"),
+       url("../fonts/Flaticon.html#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("../fonts/Flaticon.html#Flaticon") format("svg");
+  }
+}
+
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+  font-family: Flaticon;
+font-style: normal;
+}
+
+.flaticon-seat:before { content: "\f100"; }
+.flaticon-steering-wheel:before { content: "\f101"; }
+.flaticon-technical-support:before { content: "\f102"; }
+.flaticon-line-chart:before { content: "\f103"; }
+.flaticon-tag:before { content: "\f104"; }
+.flaticon-technical-support-1:before { content: "\f105"; }
+.flaticon-car:before { content: "\f106"; }
+.flaticon-shifter:before { content: "\f107"; }
+.flaticon-facebook-placeholder-for-locate-places-on-maps:before { content: "\f108"; }
+.flaticon-heart:before { content: "\f109"; }
+.flaticon-speed-meter:before { content: "\f10a"; }
+.flaticon-construction:before { content: "\f10b"; }
+.flaticon-car-insurance:before { content: "\f10c"; }
+.flaticon-mechanical-gears:before { content: "\f10d"; }
+.flaticon-car-1:before { content: "\f10e"; }
+.flaticon-support:before { content: "\f10f"; }
+.flaticon-delivery-truck:before { content: "\f110"; }
+.flaticon-quote:before { content: "\f111"; }
+.flaticon-left-quote:before { content: "\f112"; }
+.flaticon-small-calendar:before { content: "\f113"; }
+.flaticon-paypal-logo:before { content: "\f114"; }
+.flaticon-add-to-cart:before { content: "\f115"; }
+.flaticon-check-mark:before { content: "\f116"; }
+.flaticon-gears:before { content: "\f117"; }
+.flaticon-close-envelope:before { content: "\f118"; }
+.flaticon-facebook-logo:before { content: "\f119"; }
+.flaticon-instagram:before { content: "\f11a"; }
+.flaticon-twitter:before { content: "\f11b"; }
+.flaticon-google-plus-symbol:before { content: "\f11c"; }
+.flaticon-money:before { content: "\f11d"; }
+.flaticon-like:before { content: "\f11e"; }
+.flaticon-settings:before { content: "\f11f"; }
+.flaticon-play:before { content: "\f120"; }
+.flaticon-smartphone-call:before { content: "\f121"; }
+.flaticon-whatsapp-logo:before { content: "\f122"; }
+.flaticon-whatsapp:before { content: "\f123"; }
+.flaticon-guarantee:before { content: "\f124"; }
+.flaticon-hand:before { content: "\f125"; }

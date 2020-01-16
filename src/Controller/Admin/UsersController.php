@@ -57,12 +57,8 @@ class UsersController extends AppController {
         $reservationTable = TableRegistry::get('Reservations');
         $reservations = $reservationTable->find()->all();
         $this->set('reservations', $reservations);
-        $marquesTable = TableRegistry::get('Marques');
-        $marques = $marquesTable->find()->all();
-        $this->set('marques', $marques);
-        $vehiculeTable = TableRegistry::get('Vehicules');
-        $vehicules = $vehiculeTable->find()->all();
-        $this->set('vehicules', $vehicules);
+        $trains = $trainTable->find()->all();
+        $this->set('trains', $trains);
         $temoignageTable = TableRegistry::get('Temoignages');
         $temoignages = $temoignageTable->find()->all();
         $this->set('temoignages', $temoignages);
@@ -134,7 +130,7 @@ class UsersController extends AppController {
                 $user->confirmed_token = md5($user->Password);
                 $usersTable->save($user);
                 $mail = new Email();
-                $mail->setFrom('contact@transports-citadins.com')
+                $mail->setFrom('contact@setrag.com')
                      ->setTo($user->Email)
                      ->setSubject('Confirmation d\'enregistrement ')
                      ->setEmailFormat('html')
@@ -295,7 +291,7 @@ class UsersController extends AppController {
     public function reservations(){
         $this->menu();
         $reservationTable = TableRegistry::get('Reservations');
-        $reservations = $reservationTable->find()->contain(['Users', 'Vehicules' => function ($q) {
+        $reservations = $reservationTable->find()->contain(['Users', 'trains' => function ($q) {
 														        return $q->contain('Marques');
 														    }])->all();
         $this->set('reservations', $reservations);
@@ -354,8 +350,8 @@ class UsersController extends AppController {
                 $CakePdf->viewVars($this->viewVars);
                 // Get the PDF string returned
                 $pdf = $CakePdf->output();
-                $pdf = $CakePdf->write(WWW_ROOT . 'files' . DS . 'Facture_LTC_'.$reservation->id.'.pdf');
-                $this->redirect('http://transports-citadins.jobs-conseil.com/files/Facture_LTC_'.$reservation->id.'.pdf');
+                $pdf = $CakePdf->write(WWW_ROOT . 'files' . DS . 'Billet'.$reservation->id.'.pdf');
+                $this->redirect('http://localhost/booking.ga-git/files/Billet'.$reservation->id.'.pdf');
             }
         }
     }
@@ -383,9 +379,9 @@ class UsersController extends AppController {
                 $reservation = $reservation->first();
                 if ($reservation->Realiser == 0) {
                     # code...
-                    $vehiculeTable = TableRegistry::get('vehicules');
+                    $trainTable = TableRegistry::get('trains');
 
-                    $vehicule = $vehiculeTable->find()
+                    $vehicule = $trainTable->find()
                         ->where(
                             [
                                 'id' => $reservation->VehicleId,
@@ -401,7 +397,7 @@ class UsersController extends AppController {
                         $vehicule->Nombre_reel = $vehicule->Nombre;
                     }
 
-                    $vehiculeTable->save($vehicule);
+                    $trainTable->save($vehicule);
 
                     $reservation->Realiser = 1;
                     if($reservation->Payment == "Arriver"){
@@ -446,7 +442,7 @@ class UsersController extends AppController {
 
     static function export(){
         header('Content-Type: text/csv;');
-        header('Content-Disposition: attachment; filename="Liste_Client_LTC.csv"');
+        header('Content-Disposition: attachment; filename="Liste_Client_Setrag.csv"');
         $i = 0;
         $usersTable = TableRegistry::get('Users');
         $users = $usersTable->find()

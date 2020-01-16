@@ -13,482 +13,365 @@
  * @license       https://opensource.org/licenses/mit-license.php MIT License
  */
 ?>
-<!DOCTYPE HTML>
+<!doctype html>
 <html lang="fr">
-<head>
-    <?= $this->Html->charset() ?>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="keywords" content="Voiture, Bus, Toyota, Yaris, Prado, Réservation">
-    <meta name="description" content="Site de réservation de véhicules en ligne.">
-    <?= $this->fetch('meta') ?>
+    <head>
+        <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>
-        Les Transports Citadins
-    </title>
+        <!-- All CSS -->
+        <?= $this->Html->css('bootstrap.min.css') ?>
+        <!-- Owl-Carosel CSS -->
+        <?= $this->Html->css('owl.carousel.min.css') ?>
+        <!-- Theme Default CSS -->
+        <?= $this->Html->css('owl.theme.default.min.css') ?>
+        <!-- Font Awesome CSS -->
+        <?= $this->Html->css('font-awesome.min.css') ?>
+        <!-- Magnific Popup CSS -->
+        <?= $this->Html->css('magnific-popup.css') ?>
+        <!-- Flat Icon CSS -->
+        <?= $this->Html->css('flaticon.css') ?>
+        <!--  Nice Select CSS -->
+        <?= $this->Html->css('nice-select.css') ?>
+        <!--  Animate CSS -->
+        <?= $this->Html->css('animate.css') ?>
+        <!--  Slick CSS -->
+        <?= $this->Html->css('slick.css') ?>
+        <!-- Style CSS -->
+        <?= $this->Html->css('style.css') ?>
+        <!-- Responsive CSS -->
+        <?= $this->Html->css('responsive.css') ?>
 
-    <link rel="shortcut icon" href="/img/icone-ltc.png">
+        <!-- Inject CSS -->
+        <?= $this->fetch('css') ?>
 
-    <!--Bootstrap -->
-    <?= $this->Html->css('bootstrap.min.css') ?>
-    <?= $this->Html->css('style.css') ?>
-    <?= $this->Html->css('owl.carousel.css') ?>
-    <?= $this->Html->css('owl.transitions.css') ?>
-    <?= $this->Html->css('slick.css') ?>
-    <?= $this->Html->css('bootstrap-slider.min.css') ?>
-    <?= $this->Html->css('font-awesome.min.css') ?>
-    <?= $this->fetch('css') ?>
+        <!-- Title -->
+        <title>Setrag - Réserver vos Billets en ligne</title>
+        <!-- Favicon -->
+        <link rel="icon" type="image/png" href="assets/img/favicon.png">
+        
+    </head>
 
-    <?= $this->Html->script('https://code.jquery.com/jquery-1.12.4.min.js') ?>
-    <?= $this->Html->script('https://www.jqueryscript.net/demo/Cross-browser-Date-Time-Selector-For-jQuery-dateTimePicker/date-time-picker.min.js') ?>
-
-
-
-    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" rel="stylesheet">
-    <script src='https://www.google.com/recaptcha/api.js'></script>
-</head>
-<body>
-
-<!--Header-->
-
-<header>
-    <div class="default-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-3 col-md-2">
-                    <div class="logo"> <a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'index']) ?>"><?= $this->Html->image("logo-ltc.png", ['fullBase' => true, 'class' => 'logo', 'alt'=>'image']); ?></a> </div>
+    <body>
+        <!-- Start Preloader -->
+        <div class="preloader">
+            <div class="loader">
+                <div class="spinner">
+                    <div class="double-bounce1"></div>
+                    <div class="double-bounce2"></div>
                 </div>
-                <div class="col-sm-9 col-md-10">
-                    <div class="header_info">
-                        <div class="header_widgets">
-                            <div class="circle_icon"> <i class="fa fa-envelope" aria-hidden="true"></i> </div>
-                            <p class="uppercase_text">Support : </p>
-                            <a style="font-size: 13px;" href="mailto:w.asseko@transports-citadins.com">w.asseko@transports-citadins.com</a> </div>
-                        <div class="header_widgets">
-                            <div class="circle_icon"> <i class="fa fa-phone" aria-hidden="true"></i> </div>
-                            <p class="uppercase_text">Service En Ligne: </p>
-                            <a href="#">(+241) 01 79 32 54 / 04 13 83 74</a> </div>
-                        <div class="social-follow" style="margin: 20px;">
-                            <ul>
-                                <li class="dropdown">
-                                    <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="font-size: 15px; font-weight: 900; text-transForm: uppercase;">
-                                        <i class="fa fa-shopping-cart"></i> Panier
+            </div>
+        </div>
+        <!-- End Preloader -->
+        
+        <!-- Start Navbar Area -->
+        <div class="navbar-area">
+            <!-- Menu For Mobile Device -->
+            <div class="mobile-nav">
+                <a href="index-2.html" class="logo">
+                    <img src="assets/img/logo.png" alt="Image">
+                </a> 
+            </div>
+            <!-- Menu For Desktop Device -->
+            <div class="main-nav">
+                <div class="container">
+                    <nav class="navbar navbar-expand-md navbar-light">
+                        <div class="logo">
+                            <a class="navbar-brand" href="index-2.html">
+                                <img src="assets/img/logo.png" alt="Logo">
+                            </a>
+                        </div>
+                        <div class="collapse navbar-collapse mean-menu" id="navbarSupportedContent">
+                            <ul class="navbar-nav m-auto">
+                                <li class="nav-item">
+                                    <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'index']) ?>" class="nav-link">Accueil</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainList']) ?>" class="nav-link">Trains</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="#" class="nav-link dropdown-toggle">Espace Client</a>
+                                    <ul class="dropdown-menu">
+                                        <?php if(isset($user)){?>
+                                            <li><a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'demandeSpeciale']) ?>">Demande Spéciale</a></li>
+                                            <li><a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'reservationList']) ?>">Mes Réservations</a></li>
+                                            <li><a href="<?= $this->Url->build(['controller' => 'Temoignages', 'action' => 'add']) ?>">Témoigner</a></li>
+                                            <li><a href="<?= $this->Url->build(['controller' => 'Temoignages', 'action' => 'index']) ?>">Mes Témoignageages</a></li>
+                                            <li><a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'index']) ?>">Profil</a></li>
+                                            <li><a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'resetPassword']) ?>">Changer le Mot de passe</a></li>
+                                            <li><a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>">Déconnexion</a></li>
+                                        <?php } else { ?>
+                                            <li><a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>" >Connexion</a></li>
+                                        <?php } ?>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <ul class="navbar-nav"> 
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link" href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="flaticon-add-to-cart"></i>
                                         <span class="badge"><?= \App\Controller\AppController::change_number_Format($_SESSION['panier']['prix']) ?> FCFA</span>
                                     </a>
                                     <ul id="panier" class="dropdown-menu">
-                                        <?php if(isset($_SESSION['panier']['voiture']) && !empty($_SESSION['panier']['voiture'])){?>
-                                        <li><a href="<?= $this->Url->build(['controller' => 'Reservations', 'action' => 'validateBooking', 'vehicule' => $_SESSION['panier']['voiture']['id']]) ?>"><button type="button" style="background-color: #98be0e; color: white;" class="btn btn-sm btn-danger"><i class="fa fa-shopping-cart"></i> Voir le panier</button></a></li>
-                                        <li><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'index', 'reset' => 'true']) ?>"><button type="button" style="background-color: red; color: white;" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Annuler</button></a></li>
+                                        <?php if(isset($_SESSION['panier']['train']) && !empty($_SESSION['panier']['train'])){?>
+                                        <li><a href="<?= $this->Url->build(['controller' => 'Reservations', 'action' => 'validateBooking', 'train' => $_SESSION['panier']['train']['id']]) ?>"><button type="button" style="background-color: #98be0e; color: white;" class="btn btn-sm btn-danger"><i class="fa fa-shopping-cart"></i> Voir le panier</button></a></li>
+                                        <li><a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'index', 'reset' => 'true']) ?>"><button type="button" style="background-color: red; color: white;" class="btn btn-sm btn-danger"><i class="fa fa-trash"></i> Annuler</button></a></li>
+                                        <?php }else{ ?>
+                                            <li>Panier Vide</li>
                                         <?php } ?>
                                     </ul>
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </nav>
                 </div>
             </div>
         </div>
-    </div>
+        <!-- End Navbar Area -->
 
-    <!-- Navigation -->
-    <nav id="navigation_bar" class="navbar navbar-default">
-        <div class="container">
-            <div class="navbar-header">
-                <button id="menu_slide" data-target="#navigation" aria-expanded="false" data-toggle="collapse" class="navbar-toggle collapsed" type="button"> <span class="sr-only">Toggle navigation</span> <span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span> </button>
-            </div>
-            <div class="header_wrap">
-                <div class="user_login">
-                    <ul>
-                        <li class="dropdown"> <a href="#" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fa fa-user-circle" aria-hidden="true"></i>
-                                <?php if(isset($user)){echo $user['FirstName'];} ?>
-                                <i class="fa fa-angle-down" aria-hidden="true"></i></a>
-                            <ul class="dropdown-menu">
-                                <?php if(isset($user)){?>
-                                    <li><a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'index']) ?>">Profil</a></li>
-                                    <li><a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'resetPassword']) ?>">Changer le Mot de passe</a></li>
-                                    <li><a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'reservationList']) ?>">Mes Réservations</a></li>
-                                    <li><a href="<?= $this->Url->build(['controller' => 'Temoignages', 'action' => 'add']) ?>">Témoigner</a></li>
-                                    <li><a href="<?= $this->Url->build(['controller' => 'Temoignages', 'action' => 'index']) ?>">Mes Témoignageages</a></li>
-                                    <li><a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'logout']) ?>">Déconnexion</a></li>
-                                <?php } else { ?>
-                                    <li><a href="#loginform" class="btn btn-xs uppercase" data-toggle="modal" data-dismiss="modal">Espace Client</a></li>
-                                <?php } ?>
-                            </ul>
-                    </ul>
+        <?= $this->Flash->render() ?>
+        <?= $this->fetch('content') ?>
+
+        <!-- Start Subscribe Section -->
+        <section class="subscribe-section">
+            <div class="container">
+                <div class="subscribe-content">
+                    <p>Get the latest news from Kiaro</p>
+                    <h2>Subscribe To Our Newsletter</h2>
+                    <form>
+                        <input type="email" class="form-control" id="newsletteremail" placeholder="email address">
+                        <button type="submit" class="btn">
+                            <i class="fa fa-paper-plane"></i>
+                        </button>
+                    </form>
                 </div>
             </div>
-            <div class="collapse navbar-collapse" id="navigation">
-                <ul class="nav navbar-nav">
-                    <li><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'index']) ?>">Accueil</a>
-                    <li><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'vehiculeList']) ?>">Véhicules</a>
-                    <li><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'demandeSpeciale']) ?>">Demande Spéciale</a>
-                    <?php if(!isset($user)){?>
-                        <li><a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'login']) ?>">Espace Client</a></li>
-                    <?php } ?>
-                </ul>
-            </div>
-        </div>
-    </nav>
-    <!-- Navigation end -->
+        </section>
+        <!-- End Subscribe Section -->
 
-</header>
-<!-- /Header -->
-
-<?= $this->Flash->render() ?>
-<?= $this->fetch('content') ?>
-
-<!--Footer -->
-<footer>
-    <div class="footer-bottom">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-6 col-md-push-6 text-right">
-                    <div class="footer_widget">
-                        <p>Suivez-Nous:</p>
-                        <ul>
-                            <li><a href="https://www.facebook.com/Les.Transports.Citadins/"><i class="fa fa-facebook-square" aria-hidden="true"></i></a></li>
-                            <li><a href="https://twitter.com/ltcgabon"><i class="fa fa-twitter-square" aria-hidden="true"></i></a></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-6 col-md-pull-6">
-                    <p class="copy-right">Copyright &copy; 2018 Les Transports Citadins. Tous Droits Reservés</p>
-                </div>
-            </div>
-        </div>
-    </div>
-</footer>
-<!-- /Footer-->
-
-<!--Back to top-->
-<div id="back-top" class="back-top"> <a href="#top"><i class="fa fa-angle-up" aria-hidden="true"></i> </a> </div>
-<!--/Back to top-->
-
-<!--Login-form -->
-<div class="modal fade" id="loginform">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Connexion</h3>
-            </div>
-            <div class="modal-body">
+        <!-- Start Top Footer -->
+        <footer class="footer-top">
+            <div class="container">
                 <div class="row">
-                    <div class="login_wrap">
-                        <div class="col-md-12 col-sm-6">
-                            <?= $this->Form->create('User', ['url' => ['controller' => 'Users', 'action' => 'login']]); ?>
-                                <div class="form-group">
-                                    <?= $this->Form->input('Email', array(
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Email',
-                                        'type' => 'text',
-                                        'label' => 'Email',
-                                    )); ?>
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('Password', array(
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Mot de passe',
-                                        'type' => 'password',
-                                        'label' => 'Mot de Passe',
-                                    )); ?>
-                                </div>
-                                <div class="form-group checkbox">
-                                    <input type="checkbox" id="remember">
-
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('Connexion', array(
-                                        'class' => 'btn btn-success',
-                                        'id'    => 'connexion',
-                                        'type'  => 'submit',
-                                        'label' => ''
-                                    )); ?>
-                                </div>
-                            <?= $this->Form->end(); ?>
+                    <div class="col-md-6 col-lg-4">
+                        <div class="single-widget">
+                            <div class="logo-image">
+                                <a href="index-2.html">
+                                    <img src="assets/img/logo.png" alt="Logo">
+                                </a>
+                            </div>
+                            <p>Lorem Ipsum is simply dummy text of the printing 
+                            and typesetting industry. Lorem Ipsum has been 
+                            the industry's standard dummy text ever since 
+                            the 1500s, when an unknown printer took a 
+                            galley of type and scrambled it to make a 
+                            type specimen. </p>
+                            <div class="social-icon">
+                                <ul>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-facebook"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-instagram"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="flaticon-paypal-logo"></i>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="fa fa-google-plus"></i>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-
                     </div>
-                </div>
-            </div>
-            <div class="modal-footer text-center">
-                <p>Pas de compte? <a href="#signupform" data-toggle="modal" data-dismiss="modal">Enregistrement</a></p>
-                <p><a href="#forgotpassword" data-toggle="modal" data-dismiss="modal">Mot de Passe Oublié ?</a></p>
-            </div>
-        </div>
-    </div>
-</div>
-<!--/Login-form -->
-
-<!--Register-form -->
-<div class="modal fade" id="signupform">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Enregistrement</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="signup_wrap">
-                        <div class="col-md-12 col-sm-6">
-                            <?= $this->Form->create('User', ['url' => ['controller' => 'Users', 'action' => 'signup']]); ?>
-                                <div class="form-group">
-                                    <?= $this->Form->input('FirstName', array(
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Nom*',
-                                        'label' => 'Nom',
-                                        'required',
-                                    )); ?>
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('LastName', array(
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Prenom',
-                                        'label' => 'Prénom',
-
-                                    )); ?>
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('ContactNo', array(
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Téléphone*',
-                                        'label' => 'Téléphone',
-                                        'maxlength' => '10',
-                                        'required'
-                                    )); ?>
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('Email', array(
-                                        'class' => 'form-control',
-                                        'placeholder' => 'abc@xyz.com*',
-                                        'label' => 'Email',
-                                        'onBlur' => 'checkAvailability()',
-                                        'required',
-                                    )); ?>
-                                    <span id="user-availability-status" style="font-size:12px;"></span>
-                                </div>
-                                <div class="form-group">
-                                    <label class="form-label">Date de Naissance </label>
-                                    <div class="select">
-                                        <input type="date" class="form-control white_bg" name="BornDate" placeholder="Date de naissance*" required>
-                                    </div>
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('Address', array(
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Adresse',
-                                        'label' => 'Adresse',
-
-                                    )); ?>
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('City', array(
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Ville',
-                                        'label' => 'Ville',
-
-                                    )); ?>
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('ZipCode', array(
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Code Postal',
-                                        'label' => 'Code Postal',
-
-                                    )); ?>
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('Province', array(
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Province',
-                                        'label' => 'Province',
-
-                                    )); ?>
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('Country', array(
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Pays',
-                                        'label' => 'Pays',
-
-                                    )); ?>
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('Password', array(
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Mot de Passe*',
-                                        'type' => 'password',
-                                        'label' => 'Mot de Passe',
-                                        'required',
-                                    )); ?>
-
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('Password_verify', array(
-                                        'class' => 'form-control',
-                                        'type' => 'password',
-                                        'placeholder' => 'Confirmer Mot de Passe*',
-                                        'label' => 'Confirmer Mot de Passe',
-                                        'required',
-                                    )); ?>
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('S\'enregister', array(
-                                        'class' => 'btn btn-block',
-                                        'type'  => 'submit',
-                                        'label' => ''
-                                    )); ?>
-                                </div>
-                            <?= $this->Form->end(); ?>
+                    <div class="col-md-6 col-lg-2">
+                        <div class="single-widget">
+                            <h3>quick links</h3>
+                            <div class="page-list">
+                                <ul>
+                                    <li>
+                                        <a href="car-listing.html">
+                                            car listing
+                                        </a>
+                                    </li>
+                                    <li>
+                                         <a href="product-details.html">
+                                             product details
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="contact.html">
+                                            contact us
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="blog-details.html">
+                                            blog details
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="team.html">
+                                            our team
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="shop-details.html">
+                                            shop details
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-
                     </div>
-                </div>
-            </div>
-            <div class="modal-footer text-center">
-                <p>Vous avez déjà un compte? <a href="#loginform" data-toggle="modal" data-dismiss="modal">Connexion</a></p>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!--/Register-Form -->
-
-<!--Forgot-password-Form -->
-<div class="modal fade" id="forgotpassword">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Mot de Passe Oublié</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="forgotpassword_wrap">
-                        <div class="col-md-12">
-                        <?= $this->Form->create('User', ['url' => ['controller' => 'Users', 'action' => 'remember']]); ?>
-                                <div class="form-group">
-                                    <?= $this->Form->input('Email', array(
-                                        'class' => 'form-control',
-                                        'placeholder' => 'Email',
-                                        'type' => 'email',
-                                        'required'
-                                    )); ?>
-                                </div>
-                                <div class="form-group">
-                                    <?= $this->Form->input('Envoyer', array(
-                                        'class' => 'btn btn-sm btn-block',
-                                        'id'    => 'envoyer',
-                                        'type'  => 'submit',
-                                    )); ?>
-                                </div>
-                            <?= $this->Form->end(); ?>
-                            <div class="text-center">
-                                <p><a href="#loginform" data-toggle="modal" data-dismiss="modal"><i class="fa fa-angle-double-left" aria-hidden="true"></i> Connexion</a></p>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="single-widget">
+                            <h3>INSTAGRAM</h3>
+                            <div class="img-list">
+                                <ul>
+                                    <li>
+                                        <a href="#">
+                                            <img src="assets/img/footer/1.png" alt="Image">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="assets/img/footer/2.png" alt="Image">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="assets/img/footer/3.png" alt="Image">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="assets/img/footer/4.png" alt="Image">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="assets/img/footer/5.png" alt="Image">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="assets/img/footer/6.png" alt="Image">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="assets/img/footer/7.png" alt="Image"></a>
+                                        </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="assets/img/footer/8.png" alt="Image">
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <img src="assets/img/footer/9.png" alt="Image">
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-lg-3">
+                        <div class="single-widget">
+                            <h3>address</h3>
+                            <div class="information">
+                                <ul>
+                                    <li>
+                                        <a href="#">
+                                            <i class="flaticon-facebook-placeholder-for-locate-places-on-maps"></i>
+                                            office 305, street 05 Newyork
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="flaticon-smartphone-call"></i>
+                                            +82549314
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="flaticon-whatsapp"></i>
+                                            +58462329
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="flaticon-close-envelope"></i>
+                                            info@kiaro.com
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <i class="flaticon-close-envelope"></i>
+                                            support@kiaro.com
+                                        </a>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
-</div>
-<!--/Forgot-password-Form -->
+        </footer>
+        <!-- End Top Footer -->
 
-<!--add-Form -->
-<div class="modal fade" id="addplace_arriver">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Ajouter un Lieu</h3>
+        <!-- Start Bottom Footer -->
+        <footer class="footer-bottom">
+            <div class="container">
+                <p class="envytheme-link">
+                    Copyright 2020 © Setrag. Tous droits reservés.
+                </p>
             </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="forgotpassword_wrap">
-                        <div class="col-md-12">
-                            <form>
-                                <div class="form-group">
-                                   <input class="form-control" id="place1" placeholder="Le Lieu">
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-success" type="button" onclick="myFunction1()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Ajouter</span></button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--/add-Form -->
-<script>
-    function myFunction1() {
-        var x = document.getElementById("lieu_arriver");
-        var option = document.createElement("option");
-        option.text =  document.getElementById("place1").value;
-        option.selected = 'selected';
-        x.add(option, x[0]);
-    }
-</script>
-<!--add-Form -->
-<div class="modal fade" id="addplace_depart">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
+        </footer>
+        <!-- End Bottom Footer -->
 
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h3 class="modal-title">Ajouter un Lieu</h3>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="forgotpassword_wrap">
-                        <div class="col-md-12">
-                            <form>
-                                <div class="form-group">
-                                    <input class="form-control" id="place2" placeholder="Le Lieu">
-                                </div>
-                                <div class="form-group">
-                                    <button class="btn btn-success" type="button" onclick="myFunction2()" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">Ajouter</span></button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!--/add-Form -->
-<script>
-    function myFunction2() {
-        var x = document.getElementById("lieu_depart");
-        var option = document.createElement("option");
-        option.text =  document.getElementById("place2").value;
-        option.selected = 'selected';
-        x.add(option, x[0]);
-    }
-</script>
 
-<!-- Scripts -->
-<?= $this->Html->script('http://code.jquery.com/jquery.js') ?>
-<?= $this->Html->script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js') ?>
-<?= $this->Html->script('interface') ?>
-<!--bootstrap-slider-JS-->
-<?= $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js') ?>
-<!--Slider-JS-->
-<?= $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.js') ?>
-<?= $this->Html->script('owl.carousel.min') ?>
-<!--DateTime-Picker-->
-<?= $this->fetch('script') ?>
+        <!-- All Js -->
+        <!-- Jquery Min Js -->
+        <?= $this->Html->script('jquery-min') ?>
+        <!-- Popper Min Js -->
+        <?= $this->Html->script('popper.min') ?>
+        <!-- Bootstrap Min Js -->
+        <?= $this->Html->script('bootstrap.min') ?>
+        <!-- Owl.Carousel Min Js -->
+        <?= $this->Html->script('owl.carousel.min') ?>
+        <!-- Nice Select Js -->
+        <?= $this->Html->script('jquery.nice-select') ?>
+        <!-- Meanmenu Min Js -->
+        <?= $this->Html->script('jquery.meanmenu') ?>
+        <!-- Popup Magnific -->
+        <?= $this->Html->script('jquery.magnific-popup.min') ?>
+        <!-- slick Js -->
+        <?= $this->Html->script('slick.min') ?>
+        <!-- WOW Js -->
+        <?= $this->Html->script('wow.min') ?>
+        <!-- Counter Js -->
+        <?= $this->Html->script('jquery.counterup.min') ?>
+        <!-- Waypoints Js -->
+        <?= $this->Html->script('waypoints.min') ?>
+        <!-- Active Js -->
+        <?= $this->Html->script('active') ?>
 
-</body>
-
-<!-- Mirrored from themes.webmasterdriver.net/carforyou/demo/index.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 16 Jun 2017 07:22:11 GMT -->
+        <!-- Inject JS -->
+        <?= $this->fetch('script') ?>
+    </body>
 </html>

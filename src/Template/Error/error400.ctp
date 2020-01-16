@@ -38,46 +38,23 @@ endif;
     <?= __d('cake', 'The requested address {0} was not found on this server.', "<strong>'{$url}'</strong>") ?>
 </p-->
 
-<!--Page Header-->
-<section class="page-header page_404">
-    <div class="container">
-        <div class="page-header_wrap">
-            <div class="page-heading">
-                <h1>Erreur 404</h1>
-            </div>
-            <ul class="coustom-breadcrumb">
-                <li><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'index']) ?>">Accueil</a></li>
-                <li>Erreur 404</li>
-            </ul>
-        </div>
-    </div>
-    <!-- Dark Overlay-->
-    <div class="dark-overlay"></div>
-</section>
-<!-- /Page Header-->
-
-<!--Error-404-->
-<section class="error_404 section-padding">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6 col-sm-5">
-                <div class="error_text_m">
-                    <h2>4<span>0</span>4</h2>
-                    <div class="background_icon"><i class="fa fa-road" aria-hidden="true"></i></div>
-                </div>
-            </div>
-            <div class="col-md-6 col-sm-7">
-                <div class="not_found_msg">
-                    <div class="error_icon"> <i class="fa fa-smile-o" aria-hidden="true"></i> </div>
-                    <div class="error_msg_div">
-                        <h3>Oops, <span>La Page demandée n'existe pas !</span></h3>
+<!-- Error Page --> 
+<section class="error-page ptb-100">
+    <div class="d-table">
+        <div class="d-tablecell">
+            <div class="container">
+                <div class="error-item-wrapper text-center">
+                    <div class="single-error">
+                        <h1>404</h1>
+                        <h4>Oops, <span>La Page demandée n'existe pas !</span></h4>
                         <p><strong><?= $url ?></strong> inexistante.</p>
-                        <a href="javascript:history.back()" class="btn">Retour <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a> </div>
-                    <?php //$this->Html->link(__('Back'), 'javascript:history.back()') ?>
+                    </div>
+                    <div class="custom-button">
+                    <a href="javascript:history.back()" class="btn">Retour <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a> </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </section>
-<!-- /Error-404-->
-
+<!-- End Error Page -->

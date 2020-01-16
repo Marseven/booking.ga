@@ -39,7 +39,7 @@ class ReservationsController extends AppController
             $_SESSION['panier'] = array();
             $_SESSION['panier']['count']=0;
             $_SESSION['panier']['prix']=0;
-            $_SESSION['panier']['voiture']= array();
+            $_SESSION['panier']['train']= array();
         }
 
     }
@@ -85,59 +85,59 @@ class ReservationsController extends AppController
 
     public function booking(){
         $this->menu();
-        if(empty($this->request->params['?']['vehicule'])){
+        if(empty($this->request->params['?']['train'])){
             $this->Flash->error('Information manquante.');
             $this->redirect(['controller' => 'Users','action' => 'logout']);
         }else{
-            $id = (int)$this->request->params['?']['vehicule'];
+            $id = (int)$this->request->params['?']['train'];
         }
 
-        $vehiculeTable = TableRegistry::get('vehicules');
+        $trainTable = TableRegistry::get('trains');
 
-        $vehicule = $vehiculeTable->find()
+        $train = $trainTable->find()
             ->contain('Marques')
             ->where(
                 [
-                    'vehicules.id' => $id,
+                    'trains.id' => $id,
                 ]
             )
             ->all();
 
-        if (!$vehicule->first()) {
-            $this->Flash->error('Ce vehicule n\'existe pas.');
+        if (!$train->first()) {
+            $this->Flash->error('Ce train n\'existe pas.');
             $this->redirect(['controller' => 'Transports','action' => 'index']);
         }else{
-            $vehicule = $vehicule->first();
+            $train = $train->first();
         }
-        $vehicules_related = $vehiculeTable->find()
+        $trains_related = $trainTable->find()
             ->contain('Marques')
             ->where(
                 [
-                    'Type' => $vehicule->Type,
-                    'vehicules.id <>' => $vehicule->id
+                    'Type' => $train->Type,
+                    'trains.id <>' => $train->id
                 ]
             )
             ->limit(5)
             ->all();
 
-        $this->set('vehicule', $vehicule);
-        $this->set('vehicules_related', $vehicules_related);
+        $this->set('train', $train);
+        $this->set('trains_related', $trains_related);
 
     }
 
     public function validateBooking(){
         $reservationTable = TableRegistry::get('Reservations');
-        if(empty($this->request->params['?']['vehicule'])){
+        if(empty($this->request->params['?']['train'])){
             $this->Flash->error('Information manquante.');
             $this->redirect(['controller' => 'Transports','action' => 'index']);
         }else{
-            $id = (int)$this->request->params['?']['vehicule'];
+            $id = (int)$this->request->params['?']['train'];
         }
         if ($this->request->is('post')) {
             $infos = AppController::date_verified($_POST['date_depart'], $_POST['date_arriver']);
             if($infos == false){
                 $this->Flash->error('Mauvaises Dates.');
-                $this->redirect(['controller' => 'Reservations','action' => 'booking', 'vehicule' => $id]);
+                $this->redirect(['controller' => 'Reservations','action' => 'booking', 'train' => $id]);
             }else{
                 $aujourdhui = date('Y-m-d H:m');
                 $aujourdhui = new \DateTime($aujourdhui);
@@ -148,7 +148,7 @@ class ReservationsController extends AppController
                 $intervale = AppController::difference_temps($aujourdhui, $date_depart);
                 if ($intervale < 2.00) {
                     $this->Flash->error('La réservation doit être effectué au moins 2 heures avant l\'heure de départ.');
-                    $this->redirect(['controller' => 'Reservations','action' => 'booking', 'vehicule' => $id]);
+                    $this->redirect(['controller' => 'Reservations','action' => 'booking', 'train' => $id]);
                 }
                 $infos['vid'] = $id;
                 if(ReservationsTable::is_aviable($infos)){
@@ -158,31 +158,31 @@ class ReservationsController extends AppController
                     $nbre_jour = $jour.' jour(s) & '.$heure.' Heure(s)';
                     $date_depart = explode(' ', $_POST['date_depart']);
                     $date_arriver = explode(' ', $_POST['date_arriver']);
-                    $vehiculeTable = TableRegistry::get('vehicules');
+                    $trainTable = TableRegistry::get('trains');
 
-                    $vehicule = $vehiculeTable->find()
+                    $train = $trainTable->find()
                         ->contain('Marques')
                         ->where(
                             [
-                                'vehicules.id' => $id,
+                                'trains.id' => $id,
                             ]
                         )
                         ->all();
-                    $vehicule = $vehicule->first();
-                    if($vehicule->PricePerHour != 0){
-                    	$prix_total = ($jour*$vehicule->PricePerDay)+($heure*$vehicule->PricePerHour);
+                    $train = $train->first();
+                    if($train->PricePerHour != 0){
+                    	$prix_total = ($jour*$train->PricePerDay)+($heure*$train->PricePerHour);
                     }else{
                     	$heure_cal = round(($heure/24), 2);
-                		$prix_total = ($jour*$vehicule->PricePerDay)+($heure_cal*$vehicule->PricePerDay);
+                		$prix_total = ($jour*$train->PricePerDay)+($heure_cal*$train->PricePerDay);
                     }
-                    $_SESSION['panier']['prix'] = ($jour*$vehicule->PricePerDay)+($heure*$vehicule->PricePerHour);
-                    $_SESSION['panier']['voiture']['lieu_depart'] =  $_POST['lieu_depart'];
-                    $_SESSION['panier']['voiture']['lieu_arriver'] =  $_POST['lieu_arriver'];
-                    $_SESSION['panier']['voiture']['date_depart'] =  $_POST['date_depart'];
-                    $_SESSION['panier']['voiture']['date_arriver'] =  $_POST['date_arriver'];
-                    $_SESSION['panier']['voiture']['id'] =  $id;
+                    $_SESSION['panier']['prix'] = ($jour*$train->PricePerDay)+($heure*$train->PricePerHour);
+                    $_SESSION['panier']['train']['lieu_depart'] =  $_POST['lieu_depart'];
+                    $_SESSION['panier']['train']['lieu_arriver'] =  $_POST['lieu_arriver'];
+                    $_SESSION['panier']['train']['date_depart'] =  $_POST['date_depart'];
+                    $_SESSION['panier']['train']['date_arriver'] =  $_POST['date_arriver'];
+                    $_SESSION['panier']['train']['id'] =  $id;
                     $_SESSION['panier']['count']=1;
-                    $this->set('vehicule', $vehicule);
+                    $this->set('train', $train);
                     $this->set('prix_total', $prix_total);
                     $this->set([
                         'nbre_jour' => $nbre_jour,
@@ -193,15 +193,15 @@ class ReservationsController extends AppController
                     ]);
                 }else{
                     $this->Flash->error('Ce modèle n\'est pas disponible pour cette période, Merci d\'essayer une autre période.');
-                    $this->redirect(['controller' => 'Reservations','action' => 'booking', 'vehicule' => $id]);
+                    $this->redirect(['controller' => 'Reservations','action' => 'booking', 'train' => $id]);
                 }
             }
-        }elseif(isset($_SESSION['panier']['voiture']) && !empty($_SESSION['panier']['voiture'])){
+        }elseif(isset($_SESSION['panier']['train']) && !empty($_SESSION['panier']['train'])){
             $aujourdhui = date('Y-m-d H:m');
 
             $aujourdhui = new \DateTime($aujourdhui);
-            $date_depart = new \DateTime($_SESSION['panier']['voiture']['date_depart']);
-            $date_arriver = new \DateTime($_SESSION['panier']['voiture']['date_arriver']);
+            $date_depart = new \DateTime($_SESSION['panier']['train']['date_depart']);
+            $date_arriver = new \DateTime($_SESSION['panier']['train']['date_arriver']);
 
             $infos = array();
             $infos['depart'] = $date_depart;
@@ -212,32 +212,32 @@ class ReservationsController extends AppController
                 $jour = (int)$nbre_jour_reserver->d;
                 $heure = (int)$nbre_jour_reserver->h;
                 $nbre_jour = $jour.' jour(s) & '.$heure.' Heure(s)';
-                $date_depart = explode(' ', $_SESSION['panier']['voiture']['date_depart']);
-                $date_arriver = explode(' ', $_SESSION['panier']['voiture']['date_arriver']);
-                $vehiculeTable = TableRegistry::get('vehicules');
+                $date_depart = explode(' ', $_SESSION['panier']['train']['date_depart']);
+                $date_arriver = explode(' ', $_SESSION['panier']['train']['date_arriver']);
+                $trainTable = TableRegistry::get('trains');
 
-                $vehicule = $vehiculeTable->find()
+                $train = $trainTable->find()
                     ->contain('Marques')
                     ->where(
                         [
-                            'vehicules.id' => $id,
+                            'trains.id' => $id,
                         ]
                     )
                     ->all();
-                $vehicule = $vehicule->first();
-                $prix_total = ($jour*$vehicule->PricePerDay)+($heure*$vehicule->PricePerHour);
-                $this->set('vehicule', $vehicule);
+                $train = $train->first();
+                $prix_total = ($jour*$train->PricePerDay)+($heure*$train->PricePerHour);
+                $this->set('train', $train);
                 $this->set('prix_total', $prix_total);
                 $this->set([
                     'nbre_jour' => $nbre_jour,
                     'date_depart' => $date_depart,
                     'date_arriver' => $date_arriver,
-                    'lieu_arriver' => $_SESSION['panier']['voiture']['lieu_arriver'],
-                    'lieu_depart' => $_SESSION['panier']['voiture']['lieu_depart']
+                    'lieu_arriver' => $_SESSION['panier']['train']['lieu_arriver'],
+                    'lieu_depart' => $_SESSION['panier']['train']['lieu_depart']
                 ]);
             }else{
                 $this->Flash->error('Période déjà prise pour ce véhicule, Merci d\'essayer une autre période.');
-                $this->redirect(['controller' => 'Reservations','action' => 'booking', 'vehicule' => $id]);
+                $this->redirect(['controller' => 'Reservations','action' => 'booking', 'train' => $id]);
             }
 
         }else{
@@ -267,7 +267,7 @@ class ReservationsController extends AppController
                 <input type=\"hidden\" name=\"lieu_arriver\" value=\"". $_POST['lieu_arriver'] ."\">
                 <input type=\"hidden\" name=\"date_depart\" value=\"". $_POST['date_depart'] ."\">
                 <input type=\"hidden\" name=\"date_arriver\" value=\"". $_POST['date_arriver'] ."\">
-                <input type=\"hidden\" name=\"voiture\" value=\"". $_POST['voiture'] ."\">
+                <input type=\"hidden\" name=\"train\" value=\"". $_POST['train'] ."\">
             </form>";
             echo "<script language='JavaScript'>";
             echo "document.frm.submit();";
@@ -282,13 +282,13 @@ class ReservationsController extends AppController
      */
     public function ebilling(){
 
-        if (empty($_SESSION['panier']['voiture'])){
+        if (empty($_SESSION['panier']['train'])){
             $_SESSION['panier']['prix'] = $_POST['montant'];
-            $_SESSION['panier']['voiture']['lieu_depart'] =  $_POST['lieu_depart'];
-            $_SESSION['panier']['voiture']['lieu_arriver'] =  $_POST['lieu_arriver'];
-            $_SESSION['panier']['voiture']['date_depart'] =  $_POST['date_depart'];
-            $_SESSION['panier']['voiture']['date_arriver'] =  $_POST['date_arriver'];
-            $_SESSION['panier']['voiture']['id'] =  $_POST['voiture'];
+            $_SESSION['panier']['train']['lieu_depart'] =  $_POST['lieu_depart'];
+            $_SESSION['panier']['train']['lieu_arriver'] =  $_POST['lieu_arriver'];
+            $_SESSION['panier']['train']['date_depart'] =  $_POST['date_depart'];
+            $_SESSION['panier']['train']['date_arriver'] =  $_POST['date_arriver'];
+            $_SESSION['panier']['train']['id'] =  $_POST['train'];
             $_SESSION['panier']['count']=1;
         }
         
@@ -324,17 +324,17 @@ class ReservationsController extends AppController
             if (empty($_POST['email'])) die("Error : eb_email_m parameter is not provided. ");
             if (empty($_POST['telephone'])) die("Error : eb_msisdn_m parameter is not provided. ");
             $reference = AppController::str_random(6);
-            $vehiculeTable = TableRegistry::get('vehicules');
+            $trainTable = TableRegistry::get('trains');
 
-            $vehicule = $vehiculeTable->find()
+            $train = $trainTable->find()
                 ->contain(['Marques'])
                 ->where(
                     [
-                        'vehicules.id' => $_POST['voiture'],
+                        'trains.id' => $_POST['train'],
                     ]
                 )
                 ->all();
-            $vehicule = $vehicule->first();
+            $train = $train->first();
             $aujourdhui = date('Y-m-d H:m');
             $aujourdhui = new \DateTime($aujourdhui);
             $aujourdhui = $aujourdhui->add(new \DateInterval('PT2H'));
@@ -353,7 +353,7 @@ class ReservationsController extends AppController
             $eb_name = $_POST['nom'] . ' ' . $_POST['prenom'];
             $eb_address = $_POST['adresse'];
             $eb_city = $_POST['ville'];
-            $eb_detaileddescription = "Réservation d'une ".$vehicule->marque->BrandName." ".$vehicule->VehiclesTitle." pour une durée de ".$jour." jour(s) et ".$heure." heure(s).";
+            $eb_detaileddescription = "Réservation d'une ".$train->marque->BrandName." ".$train->VehiclesTitle." pour une durée de ".$jour." jour(s) et ".$heure." heure(s).";
             $eb_additionalinfo = "Merci d'avoir réservé chez Les Tranports Citadins.";
             $eb_callbackurl = 'http://transports-citadins.jobs-conseil.com/reservations/bookingSucces/?get=Ebilling&ref='.$eb_reference;
 
@@ -425,7 +425,7 @@ class ReservationsController extends AppController
                 $user_edit->Province = $_POST['province'];
                 $user_edit->id = $user->first()->id;
                 $userTable->save($user_edit);
-                $_SESSION['panier']['voiture']['userEmail'] =  $user_edit->id;
+                $_SESSION['panier']['train']['userEmail'] =  $user_edit->id;
             } else {
                 $user = $userTable->newEntity();
                 $user->FirstName = $_POST['nom'];
@@ -439,19 +439,19 @@ class ReservationsController extends AppController
                 $user->ZipCode = $_POST['poste'];
                 $user->Province = $_POST['province'];
                 $userTable->save($user);
-                $_SESSION['panier']['voiture']['userEmail'] =  $user->id;
+                $_SESSION['panier']['train']['userEmail'] =  $user->id;
             }
 
             $reservationTable = TableRegistry::get('Reservations');
             $reservation = $reservationTable->newEntity();
             $reservation->Status = 'En Traitement';
             $reservation->reference = $reference;
-            $reservation->userEmail = $_SESSION['panier']['voiture']['userEmail'];
-            $reservation->VehicleId = $_SESSION['panier']['voiture']['id'];
-            $reservation->FromDate = $_SESSION['panier']['voiture']['date_depart'];
-            $reservation->ToDate = $_SESSION['panier']['voiture']['date_arriver'];
-            $reservation->FromPlace = $_SESSION['panier']['voiture']['lieu_depart'];
-            $reservation->ToPlace = $_SESSION['panier']['voiture']['lieu_arriver'];
+            $reservation->userEmail = $_SESSION['panier']['train']['userEmail'];
+            $reservation->VehicleId = $_SESSION['panier']['train']['id'];
+            $reservation->FromDate = $_SESSION['panier']['train']['date_depart'];
+            $reservation->ToDate = $_SESSION['panier']['train']['date_arriver'];
+            $reservation->FromPlace = $_SESSION['panier']['train']['lieu_depart'];
+            $reservation->ToPlace = $_SESSION['panier']['train']['lieu_arriver'];
             $reservation->Price = $_SESSION['panier']['prix'];
             $reservation->Payment = 'Ebilling';
             $reservationTable->save($reservation);
@@ -468,18 +468,18 @@ class ReservationsController extends AppController
             echo "</script>";
             exit();
         }
-        $vehiculeTable = TableRegistry::get('vehicules');
+        $trainTable = TableRegistry::get('trains');
 
-        $vehicule = $vehiculeTable->find()
+        $train = $trainTable->find()
             ->contain(['Marques'])
             ->where(
                 [
-                    'vehicules.id' => $_POST['voiture'],
+                    'trains.id' => $_POST['train'],
                 ]
             )
             ->all();
-        $vehicule = $vehicule->first();
-        $this->set('vehicule', $vehicule);
+        $train = $train->first();
+        $this->set('train', $train);
     }
 
     public function ebillingNotif(){
@@ -508,30 +508,30 @@ class ReservationsController extends AppController
 
     public function arriver(){
 
-        if (empty($_SESSION['panier']['voiture'])){
+        if (empty($_SESSION['panier']['train'])){
             $_SESSION['panier']['prix'] = $_POST['montant'];
-            $_SESSION['panier']['voiture']['lieu_depart'] =  $_POST['lieu_depart'];
-            $_SESSION['panier']['voiture']['lieu_arriver'] =  $_POST['lieu_arriver'];
-            $_SESSION['panier']['voiture']['date_depart'] =  $_POST['date_depart'];
-            $_SESSION['panier']['voiture']['date_arriver'] =  $_POST['date_arriver'];
-            $_SESSION['panier']['voiture']['userEmail'] =  $_POST['email'];
-            $_SESSION['panier']['voiture']['id'] =  $_POST['voiture'];
+            $_SESSION['panier']['train']['lieu_depart'] =  $_POST['lieu_depart'];
+            $_SESSION['panier']['train']['lieu_arriver'] =  $_POST['lieu_arriver'];
+            $_SESSION['panier']['train']['date_depart'] =  $_POST['date_depart'];
+            $_SESSION['panier']['train']['date_arriver'] =  $_POST['date_arriver'];
+            $_SESSION['panier']['train']['userEmail'] =  $_POST['email'];
+            $_SESSION['panier']['train']['id'] =  $_POST['train'];
             $_SESSION['panier']['count']=1;
-            $id=intval($_SESSION['panier']['voiture']['id']);    
+            $id=intval($_SESSION['panier']['train']['id']);    
         }else{
-            $id=intval($_SESSION['panier']['voiture']['id']);
+            $id=intval($_SESSION['panier']['train']['id']);
         }
-        $vehiculeTable = TableRegistry::get('vehicules');
-        $vehicule = $vehiculeTable->find()
+        $trainTable = TableRegistry::get('trains');
+        $train = $trainTable->find()
             ->contain('Marques')
             ->where(
                 [
-                    'vehicules.id' => $id,
+                    'trains.id' => $id,
                 ]
             )
             ->all();
-        $vehicule=$vehicule->first();
-        $this->set(compact('vehicule'));
+        $train=$train->first();
+        $this->set(compact('train'));
         if($this->request->is('post') && isset($_POST['Confirmer'])){
             $userTable = TableRegistry::get('Users');
 
@@ -557,7 +557,7 @@ class ReservationsController extends AppController
                 $user_edit->Province = $_POST['province'];
                 $user_edit->id = $user->first()->id;
                 $userTable->save($user_edit);
-                $_SESSION['panier']['voiture']['userEmail'] =  $user_edit->id;
+                $_SESSION['panier']['train']['userEmail'] =  $user_edit->id;
             } else {
                 $user = $userTable->newEntity();
                 $user->FirstName = $_POST['nom'];
@@ -571,19 +571,19 @@ class ReservationsController extends AppController
                 $user->ZipCode = $_POST['poste'];
                 $user->Province = $_POST['province'];
                 $userTable->save($user);
-                $_SESSION['panier']['voiture']['userEmail'] =  $user->id;
+                $_SESSION['panier']['train']['userEmail'] =  $user->id;
             }
             $reference = AppController::str_random(6);
             $reservationTable = TableRegistry::get('Reservations');
             $reservation = $reservationTable->newEntity();
             $reservation->Status = 'En Traitement';
             $reservation->reference = $reference;
-            $reservation->userEmail = $_SESSION['panier']['voiture']['userEmail'];
-            $reservation->VehicleId = $_SESSION['panier']['voiture']['id'];
-            $reservation->FromDate = $_SESSION['panier']['voiture']['date_depart'];
-            $reservation->ToDate = $_SESSION['panier']['voiture']['date_arriver'];
-            $reservation->FromPlace = $_SESSION['panier']['voiture']['lieu_depart'];
-            $reservation->ToPlace = $_SESSION['panier']['voiture']['lieu_arriver'];
+            $reservation->userEmail = $_SESSION['panier']['train']['userEmail'];
+            $reservation->VehicleId = $_SESSION['panier']['train']['id'];
+            $reservation->FromDate = $_SESSION['panier']['train']['date_depart'];
+            $reservation->ToDate = $_SESSION['panier']['train']['date_arriver'];
+            $reservation->FromPlace = $_SESSION['panier']['train']['lieu_depart'];
+            $reservation->ToPlace = $_SESSION['panier']['train']['lieu_arriver'];
             $reservation->Price = $_SESSION['panier']['prix'];
             $reservation->Payment = 'Arriver';
             $reservationTable->save($reservation);
@@ -619,22 +619,22 @@ class ReservationsController extends AppController
             $this->redirect(['controller' => 'Transports','action' => 'index', 'reset' => 'true']);
         }
         $id=intval($reservation->VehicleId);
-        $vehiculeTable = TableRegistry::get('vehicules');
+        $trainTable = TableRegistry::get('trains');
 
-        $vehicule = $vehiculeTable->find()
+        $train = $trainTable->find()
             ->where(
                 [
                     'id' => $id,
                 ]
             )
             ->all();
-        $vehicule=$vehicule->first();
-        $nombre = $vehicule->Nombre_reel - 1;
+        $train=$train->first();
+        $nombre = $train->Nombre_reel - 1;
         if ($nombre < 0) {
             $nombre = 0; 
         }
-        $vehicule->Nombre_reel = $nombre;
-        $vehiculeTable->save($vehicule);
+        $train->Nombre_reel = $nombre;
+        $trainTable->save($train);
 
         ///Vider le panier & la session
 
@@ -693,7 +693,7 @@ class ReservationsController extends AppController
         $_SESSION['panier'] = array();
         $_SESSION['panier']['count']=0;
         $_SESSION['panier']['prix']=0;
-        $_SESSION['panier']['voiture']= array();
+        $_SESSION['panier']['train']= array();
     }
 
     public function printed(){
@@ -720,7 +720,7 @@ class ReservationsController extends AppController
                 $this->viewBuilder()->options([
                     'pdfConfig' => [
                         'orientation' => 'portrait',
-                        'filename' => 'Facture_LTC_'.$reservation->id
+                        'filename' => 'Billet_'.$reservation->id
                     ]
                 ]);
                 $this->set('contenu', $contenu);
@@ -730,8 +730,8 @@ class ReservationsController extends AppController
                 $CakePdf->viewVars($this->viewVars);
                 // Get the PDF string returned
                 $pdf = $CakePdf->output();
-                $pdf = $CakePdf->write(WWW_ROOT . 'files' . DS . 'Facture_LTC_'.$reservation->id.'.pdf');
-                $this->redirect('http://transports-citadins.jobs-conseil.com/files/Facture_LTC_'.$reservation->id.'.pdf');
+                $pdf = $CakePdf->write(WWW_ROOT . 'files' . DS . 'Billet_'.$reservation->id.'.pdf');
+                $this->redirect('http://localhost/booking.ga-git/files/Billet_'.$reservation->id.'.pdf');
             }
         }
     }
