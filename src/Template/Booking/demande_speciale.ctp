@@ -1,27 +1,30 @@
-<!--Page Header-->
-<section class="page-header contactus_page">
-    <div class="container">
-        <div class="page-header_wrap">
-            <div class="page-heading">
-                <h1>Demande Spéciale</h1>
+<!-- Start All Page Banner -->
+<section class="all-page-banner item-one">
+    <div class="d-table">
+        <div class="d-tablecell">
+            <div class="container">
+                <div class="banner-text text-center">
+                    <h1>Demande Spéciale</h1>
+                    <ul>
+                        <li>
+                            <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'index']) ?>">Accueil</a>
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </li>
+                        <li>Demande Spéciale</li>
+                    </ul>
+                </div>
             </div>
-            <ul class="coustom-breadcrumb">
-                <li><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'index']) ?>">Accueil</a>
-                <li>Demande Spéciale</li>
-            </ul>
         </div>
     </div>
-    <!-- Dark Overlay-->
-    <div class="dark-overlay"></div>
 </section>
-<!-- /Page Header-->
+<!-- End All Page Banner -->
 
 <!--demande-special-->
 <section class="contact_us section-padding">
     <div class="container">
         <div  class="row">
             <div class="col-md-offset-2 col-md-8">
-                <h3 style="text-align: center;">Faites Votre Demande À LTC</h3>
+                <h3 style="text-align: center;">Faites Votre Demande À Setrag</h3>
                 <div class="contact_form gray-bg">
                     <?= $this->Form->create($demandeSpeciale, ['url' => ['controller' => 'Transports', 'action' => 'demandeSpeciale']]) ?>
                         <div class="form-group">

@@ -1,27 +1,30 @@
-<!--Page Header-->
-<section class="page-header contactus_page">
-    <div class="container">
-        <div class="page-header_wrap">
-            <div class="page-heading">
-                <h1>Réservation Spéciale</h1>
+<!-- Start All Page Banner -->
+<section class="all-page-banner item-one">
+    <div class="d-table">
+        <div class="d-tablecell">
+            <div class="container">
+                <div class="banner-text text-center">
+                    <h1>Réservation Spéciale</h1>
+                    <ul>
+                        <li>
+                            <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'index']) ?>">Accueil</a>
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </li>
+                        <li>Réservation Spéciale</li>
+                    </ul>
+                </div>
             </div>
-            <ul class="coustom-breadcrumb">
-                <li><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'index']) ?>">Accueil</a>
-                <li>Réservation Spéciale</li>
-            </ul>
         </div>
     </div>
-    <!-- Dark Overlay-->
-    <div class="dark-overlay"></div>
 </section>
-<!-- /Page Header-->
+<!-- End All Page Banner -->
 
 <!--demande-special-->
 <section class="contact_us section-padding">
     <div class="container">
         <div  class="row">
             <div class=" col-md-12">
-                <h3 style="text-align: center;">Faites Votre Réservation Spéciale Aux Transports Citadins</h3>
+                <h3 style="text-align: center;">Faites Votre Réservation Spéciale À Setrag</h3>
                 <div class="contact_form gray-bg">
                     <?= $this->Form->create($reservationSpeciale, ['url' => ['controller' => 'Transports', 'action' => 'reservationSpeciale']]) ?>
                     <div class="row">
@@ -72,10 +75,10 @@
                             </div>
                         </div>
                         <div class="form-group col-md-3 col-sm-6">
-                            <?= $this->form->input('voiture', array(
-                                'options' => $vehicules,
+                            <?= $this->form->input('classe', array(
+                                'options' => ["VIP", "Classe 1", "Classe 2"],
                                 'class' => 'form-control white_bg',
-                                'label' => 'Voiture',
+                                'label' => 'Classe',
                             )); ?>
                         </div>
                     </div>

@@ -1,214 +1,198 @@
-<!--Page Header-->
-<section class="page-header listing_page">
-    <div class="container">
-        <div class="page-header_wrap">
-            <div class="page-heading">
-                <h1>Recherche</h1>
+<!-- Start All Page Banner -->
+<section class="all-page-banner item-one">
+    <div class="d-table">
+        <div class="d-tablecell">
+            <div class="container">
+                <div class="banner-text text-center">
+                    <h1>Recherche</h1>
+                    <ul>
+                        <li>
+                            <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'index']) ?>">Accueil</a>
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </li>
+                        <li>Recherche</li>
+                    </ul>
+                </div>
             </div>
-            <ul class="coustom-breadcrumb">
-                <li><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'index']) ?>">Accueil</a></li>
-                <li>Recherche</li>
-            </ul>
         </div>
     </div>
-    <!-- Dark Overlay-->
-    <div class="dark-overlay"></div>
 </section>
-<!-- /Page Header-->
+<!-- End All Page Banner -->
 
-<!--Listing-->
-<section class="listing-page">
+<!-- Start Single Shop -->
+<section class="shop-section left-shop-section ptb-100">
     <div class="container">
         <div class="row">
-            <div class="col-md-9 col-md-push-3">
-                <div class="result-sorting-wrapper">
-                    <div class="sorting-count">
-                        <p><span><?php if(isset($vehicules_search_A)){ echo $vehicules_search_A->count();}elseif(isset($vehicules_search_a)){echo $vehicules_search_a->count();} ?> Véhicule(s)</span></p>
-                    </div>
-                </div>
-
-                <?php
-                    if(isset($vehicules_search_A)){
-                        if($vehicules_search_A->count() == 0) {
-                            ?>
-                            <div style="text-align: center; margin-bottom: 0px;" class="alert alert-block alert-danger">
-                                <button type="button" class="close" data-dismiss="alert">
-                                    <i class="ace-icon fa fa-times"></i>
-                                </button>
-                                Aucun Résultat
-                            </div>
-                            <?php
-                        }
-                        foreach($vehicules_search_A as $vehicule) {
-                        if(isset($data)){
-                            $data['vid'] = $vehicule->id;
-                            if(\App\Model\Table\VehiculesTable::is_avaible($data)){
-                                ?>
-                                <div class="product-listing-m gray-bg">
-                                    <div class="product-listing-img"><?= $this->Html->image("admin/img/vehicleimages/".$vehicule->Vimage1, ['fullBase' => true, 'alt'=>'image', 'class'=>'img-responsive']); ?></div>
-                                    <div class="product-listing-content">
-                                        <h5><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'vehiculeItem', 'vehicule' => $vehicule->id]) ?>"><?php echo htmlentities($vehicule->marque->BrandName);?> , <?php echo htmlentities($vehicule->VehiclesTitle);?></a></h5>
-                                        <p class="list-price"><?php echo htmlentities(\App\Controller\AppController::change_number_format($vehicule->PricePerDay));?> FCFA/J</p>
-                                        <p class="list-price"><?= $vehicule->PricePerHour == 0 ? '' : \App\Controller\AppController::change_number_format($vehicule->PricePerHour).' FCFA/H' ?></p>
-                                        <ul>
-                                            <li><i class="fa fa-user" aria-hidden="true"></i><?php echo htmlentities($vehicule->SeatingCapacity);?> Sièges</li>
-                                            <li><i class="fa fa-tint" aria-hidden="true"></i><?php echo htmlentities($vehicule->FuelType);?></li>
-                                            <li><i class="fa fa-cogs" aria-hidden="true"></i> <?= $vehicule->Transmission == 1 ? 'Automatique' : 'Manuel' ?></li>
-                                        </ul>
-                                        <form action="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'vehiculeItem', 'vehicule' => $vehicule->id]) ?>" method="post">
-                                            <input type="hidden" name="lieu_depart" value="<?= $data['lieu_depart'] ?>">
-                                            <input type="hidden" name="lieu_arriver" value="<?= $data['lieu_arriver'] ?>">
-                                            <input type="hidden" name="date_depart" value="<?= $data['date_depart'] ?>">
-                                            <input type="hidden" name="date_arriver" value="<?= $data['date_arriver'] ?>">
-                                            <button type="submit" class="btn">Selectioner <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></button>
-                                        </form>
-                                    </div>
-                                </div>
-                                <?php
-                            }else{
-                                ?>
-                                <div style="text-align: center; margin-bottom: 0px;" class="alert alert-block alert-danger">
-                                    <button type="button" class="close" data-dismiss="alert">
-                                        <i class="ace-icon fa fa-times"></i>
-                                    </button>
-                                    Voiture indisponible pour cette période de temps
-                                </div>
-                                <?php
-                            }
-                        }else{?>
-                            <div class="product-listing-m gray-bg">
-                                <div class="product-listing-img"><?= $this->Html->image("admin/img/vehicleimages/".$vehicule->Vimage1, ['fullBase' => true, 'alt'=>'image', 'class'=>'img-responsive']); ?></div>
-                                <div class="product-listing-content">
-                                    <h5><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'vehiculeItem', 'vehicule' => $vehicule->id]) ?>"><?php echo htmlentities($vehicule->marque->BrandName);?> , <?php echo htmlentities($vehicule->VehiclesTitle);?></a></h5>
-                                    <p class="list-price"><?php echo htmlentities(\App\Controller\AppController::change_number_format($vehicule->PricePerDay));?> FCFA/J</p>
-                                    <p class="list-price"><?= $vehicule->PricePerHour == 0 ? '' : \App\Controller\AppController::change_number_format($vehicule->PricePerHour).' FCFA/H' ?></p>
-                                    <ul>
-                                        <li><i class="fa fa-user" aria-hidden="true"></i><?php echo htmlentities($vehicule->SeatingCapacity);?> Sièges</li>
-                                        <li><i class="fa fa-tint" aria-hidden="true"></i><?php echo htmlentities($vehicule->FuelType);?></li>
-                                        <li><i class="fa fa-cogs" aria-hidden="true"></i> <?= $vehicule->Transmission == 1 ? 'Automatique' : 'Manuel' ?></li>
-                                    </ul>
-                                    <a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'vehiculeItem', 'vehicule' => $vehicule->id]) ?>">
-                                        <button  class="btn">Selectioner <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></button>
-                                    </a>
-                                </div>
-                            </div>
-                        <?php
-                            }
-                        }
-                    }elseif(isset($vehicules_search_a)){
-                        if($vehicules_search_a->count() == 0) {
-                            ?>
-                            <div style="text-align: center; margin-bottom: 0px;" class="alert alert-block alert-danger">
-                                <button type="button" class="close" data-dismiss="alert">
-                                    <i class="ace-icon fa fa-times"></i>
-                                </button>
-                                Aucun Résulat !
-                            </div>
-                            <?php
-                        }
-                        foreach($vehicules_search_a as $vehicule) {
-                    ?>
-                    <div class="product-listing-m gray-bg">
-                        <div class="product-listing-img"><?= $this->Html->image("admin/img/vehicleimages/".$vehicule->Vimage1, ['fullBase' => true, 'alt'=>'image', 'class'=>'img-responsive']); ?></div>
-                        <div class="product-listing-content">
-                            <h5><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'vehiculeItem', 'vehicule' => $vehicule->id]) ?>"><?php echo htmlentities($vehicule->marque->BrandName);?> , <?php echo htmlentities($vehicule->VehiclesTitle);?></a></h5>
-                            <p class="list-price"><?php echo htmlentities(\App\Controller\AppController::change_number_format($vehicule->PricePerDay));?> FCFA/J</p>
-                            <p class="list-price"><?= $vehicule->PricePerHour == 0 ? '' : \App\Controller\AppController::change_number_format($vehicule->PricePerHour).' FCFA/H' ?></p>
-                            <ul>
-                                <li><i class="fa fa-user" aria-hidden="true"></i><?php echo htmlentities($vehicule->SeatingCapacity);?> Sièges</li>
-                                <li><i class="fa fa-tint" aria-hidden="true"></i><?php echo htmlentities($vehicule->FuelType);?></li>
-                                <li><i class="fa fa-cogs" aria-hidden="true"></i> <?= $vehicule->Transmission == 1 ? 'Automatique' : 'Manuel' ?></li>
-                            </ul>
-                            <a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'vehiculeItem', 'vehicule' => $vehicule->id]) ?>">
-                                <button  class="btn">Selectioner <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></button>
-                            </a>
-                        </div>
-                    </div>
-                <?php
-                }}
-                ?>
-
-                <!--div class="row">
-                    <div class="container">
-                        <ul class="pagination">
-                            <?php echo $this->Paginator->prev('Précédent'); ?>
-                            <?php echo $this->Paginator->numbers().' ' ; ?>
-                            <?php echo $this->Paginator->next('Suivant'); ?>
-                        </ul>
-                    </div>
-                </div-->
-
-                <div class="space-20"></div>
-                <div class="divider"></div>
-
-                <!--Similar-Cars-->
-                <div class="similar_cars">
-                    <h3>Voitures Similaires</h3>
-                    <div class="row">
-                        <?php foreach($vehicules_related as $vehicule) { ?>
-                            <div class="col-md-4 grid_listing">
-                                <div class="product-listing-m gray-bg">
-                                    <div class="product-listing-img"> <a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'vehiculeItem', 'vehicule' => $vehicule->id]) ?>"><?= $this->Html->image("admin/img/vehicleimages/".$vehicule->Vimage1, ['fullBase' => true, 'alt'=>'image', 'class'=>'img-responsive']); ?></a>
-                                    </div>
-                                    <div class="product-listing-content">
-                                        <h5><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'vehiculeItem', 'vehicule' => $vehicule->id]) ?>"><?php echo htmlentities($vehicule->marque->BrandName);?> , <?php echo htmlentities($vehicule->VehiclesTitle);?></a></h5>
-                                        <p class="list-price"><?php echo htmlentities(\App\Controller\AppController::change_number_format($vehicule->PricePerDay));?> FCFA/J</p><br>
-                                        <p class="list-price"><?= $vehicule->PricePerHour == 0 ? '' : \App\Controller\AppController::change_number_format($vehicule->PricePerHour).' FCFA/H' ?></p>
-
-                                        <ul class="features_list">
-
-                                            <li><i class="fa fa-user" aria-hidden="true"></i><?php echo htmlentities($vehicule->SeatingCapacity);?> Sièges</li>
-                                            <li><i class="fa fa-tint" aria-hidden="true"></i><?php echo htmlentities($vehicule->FuelType);?></li>
-                                            <li><i class="fa fa-cogs" aria-hidden="true"></i> <?= $vehicule->Transmission == 1 ? 'Automatique' : 'Manuel' ?></li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        <?php } ?>
-                    </div>
-                </div>
-                <!--/Similar-Cars-->
-            </div>
-
-            <!--Side-Bar-->
-            <aside class="col-md-3 col-md-pull-9">
-                <div class="sidebar_widget">
-                    <div class="widget_heading">
-                        <h5><i class="fa fa-filter" aria-hidden="true"></i> Trouver votre voiture </h5>
-                    </div>
-                    <div class="sidebar_filter">
-                        <form action="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'searchResult']) ?>" method="post">
+            <div class="col-lg-4">
+                <div class="right-shop">
+                    <div class="productsearchform perches-form-wrapper">
+                        <form class="form-wrap" action="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'searchResult']) ?>" method="post">
                             <div class="form-group select">
-                                <select class="form-control" name="brand">
-                                    <label class="form-label">Marque</label>
-                                    <?php foreach($marques as $marque){?>
-                                        <option value="<?php echo htmlentities($marque->id);?>"><?php echo htmlentities($marque->BrandName);?></option>
-                                    <?php } ?>
+                                <select class="form-control" name="classe">
+                                    <option>VIP</option>
+                                    <option>Classe 1</option>
+                                    <option>Classe 2</option>
                                 </select>
                             </div>
                             <div class="form-group select">
                                 <select class="form-control" name="type">
-                                    <label class="form-label">Type</label>
-                                    <option>4x4 Standard</option>
-                                    <option>4x4 Luxe</option>
-                                    <option>4x4 Utilitaire</option>
-                                    <option>4x4 Mini</option>
-                                    <option>Bus</option>
-                                    <option>Mini Bus</option>
-                                    <option>Berline Standard</option>
-                                    <option>Berline Luxe</option>
+                                    <option>Express</option>
+                                    <option>Omnibus</option>
                                 </select>
                             </div>
-
                             <div class="form-group">
                                 <button type="submit" name="search" value="autre" class="btn btn-block"><i class="fa fa-search" aria-hidden="true"></i> Rechercher </button>
                             </div>
                         </form>
                     </div>
                 </div>
-            </aside>
-            <!--/Side-Bar-->
+            </div>
+            <div class="col-lg-8">
+                <div class="left-shop">
+                    <div class="row">
+                        <?php if(isset($trains_search_A)){
+                            if(!$trains_search_A->first()){ ?>
+                                <div style="text-align: center;" class="alert alert-info">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                    Aucun Résultats !
+                                </div>
+                            <?php } ?>
+                            <?php
+                            foreach($trains_search_A as $train)
+                            {  
+                                if(isset($data)){
+                                    $data['tid'] = $vehicule->id;
+                                    if(\App\Model\Table\TrainsTable::is_avaible($data)){
+                                ?>
+                                        <div class="col-sm-6 col-md-4 col-lg-4">
+                                            <div class="single-shop">
+                                                <div class="shop-image">
+                                                    <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>"><?= $this->Html->image("admin/img/trainimages/".$vehicule->Timage1, ['fullBase' => true, 'alt'=>'image']); ?></a>
+
+                                                    <div class="add-cart-hover">
+                                                        <div class="d-table">
+                                                            <div class="d-tablecell">
+                                                                <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>" class="add-cart">Réserver</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="image-caption">
+                                                    <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>"><h3><?php echo htmlentities($train->TrainTitle);?></h3></a>
+                                                    <span>À partir de <?php echo htmlentities($train->PriceClasse2);?> FCFA</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php
+                                    }else{
+                                        ?>
+                                        <div style="text-align: center; margin-bottom: 0px;" class="alert alert-block alert-danger">
+                                            <button type="button" class="close" data-dismiss="alert">
+                                                <i class="ace-icon fa fa-times"></i>
+                                            </button>
+                                            Voiture indisponible pour cette période de temps
+                                        </div>
+                                        <?php
+                                    }
+                                }else{ ?>
+                                   <div class="col-sm-6 col-md-4 col-lg-4">
+                                        <div class="single-shop">
+                                            <div class="shop-image">
+                                                <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>"><?= $this->Html->image("admin/img/trainimages/".$vehicule->Timage1, ['fullBase' => true, 'alt'=>'image']); ?></a>
+
+                                                <div class="add-cart-hover">
+                                                    <div class="d-table">
+                                                        <div class="d-tablecell">
+                                                            <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>" class="add-cart">Réserver</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="image-caption">
+                                                <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>"><h3><?php echo htmlentities($train->TrainTitle);?></h3></a>
+                                                <span>À partir de <?php echo htmlentities($train->PriceClasse2);?> FCFA</span>
+                                            </div>
+                                        </div>
+                                    </div> 
+                             <?php } 
+                            } 
+                        }elseif(isset($trains_search_a)){
+                            if($trains_search_a->count() == 0) { ?> 
+                                <div style="text-align: center;" class="alert alert-info">
+                                    <button type="button" class="close" data-dismiss="alert">
+                                        <i class="fa fa-times"></i>
+                                    </button>
+                                    Aucun Résultats !
+                                </div>
+                            <?php } ?>
+                            <?php
+                            foreach($trains_search_a as $train)
+                            {  ?>
+                                <div class="col-sm-6 col-md-4 col-lg-4">
+                                    <div class="single-shop">
+                                        <div class="shop-image">
+                                            <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>"><?= $this->Html->image("admin/img/trainimages/".$vehicule->Timage1, ['fullBase' => true, 'alt'=>'image']); ?></a>
+
+                                            <div class="add-cart-hover">
+                                                <div class="d-table">
+                                                    <div class="d-tablecell">
+                                                        <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>" class="add-cart">Réserver</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="image-caption">
+                                            <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>"><h3><?php echo htmlentities($train->TrainTitle);?></h3></a>
+                                            <span>À partir de <?php echo htmlentities($train->PriceClasse2);?> FCFA</span>
+                                        </div>
+                                    </div>
+                                </div>
+                        <?php }} ?>
+
+                    </div>
+                    <nav class="pagination-wrap">
+                        <ul class="pagination pagination-lg m-0">
+                            <?php echo $this->Paginator->prev('Précédent'); ?>  
+                            <?php echo $this->Paginator->numbers().' ' ; ?>
+                            <?php echo $this->Paginator->next('Suivant'); ?>
+                        </ul>
+                    </nav>
+
+                    <!-- Reletad Post -->
+                    <section class="related-post related-post2">
+                        <div class="container">
+                            <div class="post-title text-center">
+                                <h3>related post</h3>
+                            </div>
+                            <div class="related-post-slider owl-carousel owl-theme">
+                                <?php foreach($trains_related as $train) { ?>
+                                    <div class="single-shop">
+                                        <div class="shop-image">
+                                            <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>"><?= $this->Html->image("admin/img/vehicleimages/".$train->Vimage1, ['fullBase' => true, 'alt'=>'image']); ?></a>
+            
+                                            <div class="add-cart-hover">
+                                                <div class="d-table">
+                                                    <div class="d-tablecell">
+                                                        <a href="#" class="add-cart">Réserver</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="image-caption">
+                                            <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>"><h3><?php echo htmlentities($train->Title);?></h3></a>
+                                            <span>À partir de <?php echo htmlentities($train->PriceClasse2);?></span>
+                                        </div>
+                                    </div>
+                                <?php } ?>
+                            </div>
+                        </div>
+                    </section>
+                    <!-- End Reletad Post -->
+                </div>
+            </div>
         </div>
     </div>
 </section>
-<!-- /Listing-->
+<!-- End Single Shop -->

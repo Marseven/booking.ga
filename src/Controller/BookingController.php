@@ -104,7 +104,7 @@ class BookingController extends AppController
              }
         }
         if (isset($_POST['search']) && $_POST['search'] == 'autre') {
-            $classe = $_POST['brand'];
+            $classe = $_POST['classe'];
             $type = $_POST['type'];
             $trains_search = $trainTable->find()
                 ->where(

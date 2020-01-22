@@ -27,7 +27,7 @@ class ReservationsController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow(['booking', 'validateBooking', 'bookingSucces', 'arriver', 'ebilling', 'visa', 'ebillingNotif', 'gateway', 'printed']);
+        $this->Auth->allow(['booking', 'validateBooking', 'bookingSucces', 'arriver', 'ebilling', 'ebillingNotif', 'gateway', 'printed']);
         $user = $this->Auth->user();
         if(isset($user)){
             $user['confirmed_at'] = new FrozenTime($user['confirmed_at']);
@@ -95,7 +95,6 @@ class ReservationsController extends AppController
         $trainTable = TableRegistry::get('trains');
 
         $train = $trainTable->find()
-            ->contain('Marques')
             ->where(
                 [
                     'trains.id' => $id,
@@ -110,11 +109,11 @@ class ReservationsController extends AppController
             $train = $train->first();
         }
         $trains_related = $trainTable->find()
-            ->contain('Marques')
             ->where(
                 [
                     'Type' => $train->Type,
-                    'trains.id <>' => $train->id
+                    'trains.id <>' => $train->id,
+                    'Classe' => $train->Classe
                 ]
             )
             ->limit(5)
@@ -161,7 +160,6 @@ class ReservationsController extends AppController
                     $trainTable = TableRegistry::get('trains');
 
                     $train = $trainTable->find()
-                        ->contain('Marques')
                         ->where(
                             [
                                 'trains.id' => $id,
@@ -217,7 +215,6 @@ class ReservationsController extends AppController
                 $trainTable = TableRegistry::get('trains');
 
                 $train = $trainTable->find()
-                    ->contain('Marques')
                     ->where(
                         [
                             'trains.id' => $id,
@@ -277,9 +274,6 @@ class ReservationsController extends AppController
 
     }
 
-    /**
-     *
-     */
     public function ebilling(){
 
         if (empty($_SESSION['panier']['train'])){
@@ -327,7 +321,6 @@ class ReservationsController extends AppController
             $trainTable = TableRegistry::get('trains');
 
             $train = $trainTable->find()
-                ->contain(['Marques'])
                 ->where(
                     [
                         'trains.id' => $_POST['train'],
@@ -353,7 +346,7 @@ class ReservationsController extends AppController
             $eb_name = $_POST['nom'] . ' ' . $_POST['prenom'];
             $eb_address = $_POST['adresse'];
             $eb_city = $_POST['ville'];
-            $eb_detaileddescription = "Réservation d'une ".$train->marque->BrandName." ".$train->VehiclesTitle." pour une durée de ".$jour." jour(s) et ".$heure." heure(s).";
+            $eb_detaileddescription = "Réservation d'une ".$train->marque->classeName." ".$train->VehiclesTitle." pour une durée de ".$jour." jour(s) et ".$heure." heure(s).";
             $eb_additionalinfo = "Merci d'avoir réservé chez Les Tranports Citadins.";
             $eb_callbackurl = 'http://transports-citadins.jobs-conseil.com/reservations/bookingSucces/?get=Ebilling&ref='.$eb_reference;
 
@@ -471,7 +464,6 @@ class ReservationsController extends AppController
         $trainTable = TableRegistry::get('trains');
 
         $train = $trainTable->find()
-            ->contain(['Marques'])
             ->where(
                 [
                     'trains.id' => $_POST['train'],
@@ -523,7 +515,6 @@ class ReservationsController extends AppController
         }
         $trainTable = TableRegistry::get('trains');
         $train = $trainTable->find()
-            ->contain('Marques')
             ->where(
                 [
                     'trains.id' => $id,
@@ -576,7 +567,7 @@ class ReservationsController extends AppController
             $reference = AppController::str_random(6);
             $reservationTable = TableRegistry::get('Reservations');
             $reservation = $reservationTable->newEntity();
-            $reservation->Status = 'En Traitement';
+            $reservation->Status = 'Pending';
             $reservation->reference = $reference;
             $reservation->userEmail = $_SESSION['panier']['train']['userEmail'];
             $reservation->VehicleId = $_SESSION['panier']['train']['id'];
@@ -589,10 +580,6 @@ class ReservationsController extends AppController
             $reservationTable->save($reservation);
             $this->redirect(['controller' => 'Reservations','action' => 'bookingSucces', 'get' => 'Arriver', 'ref'=>$reference]);        
         }
-    }
-
-    public function visa(){
- 
     }
 
     public function bookingSucces(){
@@ -644,9 +631,9 @@ class ReservationsController extends AppController
         $to =  $contenu['email'];
 
         $mail = new Email();
-        $mail->setFrom('commercial@transports-citadins.com')
+        $mail->setFrom('commercial@setrag.com')
             ->setTo(["richard.mebodo@jobs-conseil.com", $to])
-            ->setSubject('Réservation chez Les Transports Citadins')
+            ->setSubject('Réservation chez Setrag')
             ->setEmailFormat('html')
             ->setTemplate('reservation')
             ->setViewVars(array(
@@ -667,7 +654,7 @@ class ReservationsController extends AppController
 
                             <h4>Détails de la réservation:</h4>
 
-                            <strong>Libellé : </strong>'.$contenu['brand'].' '.$contenu['title'].'<br />
+                            <strong>Libellé : </strong>'.$contenu['classe'].' '.$contenu['title'].'<br />
                             <strong>Référence : </strong>'.$contenu['reference'].'<br />
                             <strong>Status : </strong>'.$contenu['status'].'<br />
                             <strong>Montant : </strong>'.AppController::change_number_format($contenu['montant']) .' Francs CFA <br/>

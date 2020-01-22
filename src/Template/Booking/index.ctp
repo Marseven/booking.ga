@@ -7,13 +7,12 @@
                     <div class="slider-text">
                         <div class="d-table">
                             <div class="d-tablecell">
-                                <h1>The BEST Built Cars IN THE WOrld</h1>
-                                <p>Technology you can enjoy !</p>
+                                <h1>Désormais réservez en Ligne</h1>
+                                <p>SETRAG</p>
                             </div>
                         </div>
                         <div class="slider-button">
-                            <a href="#" class="custom-btn1">read more</a>
-                            <a href="#" class="custom-btn2">book now</a>
+                            <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainList']) ?>" class="custom-btn2">Réserver Maintenant</a>
                         </div>
                     </div>
                 </div>
@@ -27,13 +26,12 @@
                     <div class="slider-text">
                         <div class="d-table">
                             <div class="d-tablecell">
-                                <h1>The BEST Built Cars IN THE WOrld</h1>
-                                <p>Technology you can enjoy !</p>
+                                <h1>Gagnez du temps !</h1>
+                                <p>SETRAG</p>
                             </div>
                         </div>
                         <div class="slider-button">
-                            <a href="#" class="custom-btn1">read more</a>
-                            <a href="#" class="custom-btn2">book now</a>
+                            <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainList']) ?>" class="custom-btn2">Réserver Maintenant</a>
                         </div>
                     </div>
                 </div>
@@ -47,43 +45,61 @@
 <section class="perches-section">
     <div class="container">
         <div class="perches-form-wrapper">
-            <form>
+            <?= $this->Form->create($search, ['url' => ['controller' => 'Transports', 'action' => 'searchResult']]); ?>
                 <div class="form-wrap">
                     <div class="single-select">
-                        <h3>make</h3>
-                        <select class="form-control">
-                            <option data-display="any">any</option>
-                            <option value="1">one</option>
-                            <option value="2">two</option>
-                            <option value="3">three</option>
-                            <option value="4">four</option>
+                        <label class="form-label">Lieu de départ </label>
+                        <select class="form-control" id="lieu_depart" name="lieu_depart">
+                            <option value="Owendo">Owendo</option>
+                            <option value="Franceville">Franceville</option>
                         </select>
                     </div>
+                    
                     <div class="single-select">
-                        <h3>model</h3>
-                        <select class="form-control">
-                            <option data-display="select">select</option>
-                            <option value="1">model</option>
-                            <option value="2">two</option>
-                            <option value="3">three</option>
-                            <option value="4">four</option>
+                        <label class="form-label">Type de Train </label>
+                        <select class="form-control" name="type">
+                            <option>Express</option>
+                            <option>Omnibus</option>
                         </select>
                     </div>
+
                     <div class="single-select">
-                        <h3>price</h3>
-                        <select class="form-control">
-                            <option data-display="$3200-$82000">$3200-$82000</option>
-                            <option value="1">$8700-$19000</option>
-                            <option value="2">$2500-$65000</option>
-                            <option value="2">$4000-$34000</option>
-                            <option value="2">$1200-$98000</option>
-                        </select>
+                            <label class="form-label">Classe</label>
+                            <select class="form-control" name="classse">
+                                <option>VIP</option>
+                                <option>Classe 1</option>
+                                <option>Classe 2</option>
+                            </select>
                     </div>
-                    <div class="submit-button">
-                        <button type="submit" class="search-button">search</button>
+
+                    <div class="single-select">
+                        <label class="form-label">Lieu d'arrivé </label>
+                        <select class="form-control" id="lieu_depart" name="lieu_depart">
+                            <option value="Owendo">Owendo</option>
+                            <option value="Franceville">Franceville</option>
+                        </select>
                     </div>
                 </div>
-            </form>
+                <div class="form-wrap">
+                    <div class="single-select" style="margin-right:10px;">
+                        <label class="form-label">Date de départ </label>
+                        <div class="select">
+                            <input type="date" class="form-control" id="J-demo-03" name="date_depart" placeholder="Date de Départ" required>
+                        </div>
+                    </div>
+
+                    <div class="single-select">
+                        <label class="form-label">Date d'arrivé </label>
+                        <div class="select">
+                            <input type="date" class="form-control" id="J-demo-04" name="date_arriver" placeholder="Date de Retour">
+                        </div>
+                    </div>
+
+                    <div class="submit-button">
+                        <button type="submit" value="accueil" name="search" class="search-button">Rechercher</button>
+                    </div>
+                </div>
+            <?= $this->Form->end(); ?>
         </div>
     </div>
 </section>
@@ -97,7 +113,7 @@
             <div class="col-lg-6">
                 <div class="ab-left">
                     <div class="section-title">
-                        <h2>about Company</h2>
+                        <h2>À Propos de SETRAG</h2>
                         <p>We are Trusted Name in Car Sales & Services</p>
                         <span>company</span>
                     </div>
@@ -156,13 +172,13 @@
             <div class="col-lg-6">
                 <div class="single-about">
                     <div class="image-two">
-                        <img src="assets/img/about/2.jpg" alt="Image">
+                        <img src="/booking.ga-git/img/about/2.jpg" alt="Image">
                     </div>
                     <div class="image-one">
-                        <img src="assets/img/about/1.jpg" alt="Image">
+                        <img src="/booking.ga-git/img/about/1.jpg" alt="Image">
                     </div>
                     <div class="image-three">
-                        <img src="assets/img/about/border.png" alt="Image">
+                        <img src="/booking.ga-git/img/about/border.png" alt="Image">
                     </div>
                 </div>
             </div>
@@ -175,39 +191,45 @@
 <section class="recent-add-section pt-100 pb-70">
     <div class="container">
         <div class="section-title text-center">
-            <h2>recently added</h2>
-            <p>Kiaro Premium Car Inventory</p>
-            <span>recently</span>
+            <h2>Trains disponibles</h2>
+            <p>Setrag</p>
+            <span>Réserver</span>
         </div>
         <div class="row">
-            <div class="col-md-6 col-lg-3">
-                <div class="single-add-box">   
-                    <div class="image">
-                        <a href="product-details.html">
-                            <img src="assets/img/recently-add/1.jpg" alt="Image">
-                        </a>
-                    </div> 
-                    <div class="image-caption-wrapper">
-                        <div class="add-box-content">
-                            <a href="product-details.html"><h3>Mazda Mazda6</h3></a>
-                            <div class="info-list">
-                                <ul>
-                                    <li><i class="flaticon-car"></i>new</li>
-                                    <li><i class="flaticon-shifter"></i>Manual</li>
-                                    <li><i class="flaticon-facebook-placeholder-for-locate-places-on-maps"></i>australia</li>
-                                </ul>
+            <?php if(!$trains->first()){ ?>
+                <div style="text-align: center;" class="alert alert-info">
+                    <button type="button" class="close" data-dismiss="alert">
+                        <i class="fa fa-times"></i>
+                    </button>
+                    Pas De trains pour le moment !
+                </div>
+            <?php } ?>
+            <?php foreach($trains as $k => $train){ ?>
+                <div class="col-md-6 col-lg-3">
+                    <div class="single-add-box">   
+                        <div class="image">
+                            <a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'trainItem', 'train' => $train->id]) ?>">
+                                <?= $this->Html->image("admin/img/trainimages/".$train->Timage1, ['fullBase' => true, 'alt'=>'image']); ?>
+                            </a>
+                        </div> 
+                        <div class="image-caption-wrapper">
+                            <div class="add-box-content">
+                                <a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'trainItem', 'train' => $train->id]) ?>"><h3><?php echo htmlentities($train->TrainsTitle);?></h3></a>
+                                <div class="info-list">
+                                    <ul>
+                                        <li><i class="flaticon-car"></i><?php echo htmlentities($train->NombrePlace);?></li>
+                                        <li><i class="flaticon-shifter"></i><?php echo htmlentities($train->Type);?></li>
+                                        <li><i class="flaticon-facebook-placeholder-for-locate-places-on-maps"></i><?php echo htmlentities($train->Depart);?></li>
+                                    </ul>
+                                </div>
                             </div>
-                        </div>
-                        <div class="add-box-bottom">
-                            <a href="#"><h5>$15,000</h5></a>
-                            <ul class="react">
-                                <li><a href="#"><i class="flaticon-heart"></i></a></li>
-                                <li><a href="#"><i class="flaticon-speed-meter"></i></a></li>
-                            </ul>
+                            <div class="add-box-bottom">
+                                <a href="#"><h5>À partir de <?php echo htmlentities(\App\Controller\AppController::change_number_format($train->PriceClasse2));?> FCFA</h5></a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            <?php } ?>
         </div>
     </div>
 </section>
@@ -217,13 +239,10 @@
 <section class="counter-section ptb-100">
     <div class="container">
         <div class="counter-title text-center">
-            <span>Are you looking </span>
-            <h2>To Buy A Car?</h2>
+            <span>Une Compagnie expérimenté </span>
+            <h2>Une expérience unique ?</h2>
             <p>MotorLand is nisi aliquip exa con velit esse cillum dolore fugiatal sint 
             occaecat excepteur ipsum dolor sit amet consectetur.</p>
-            <form>
-                <input type="text" class="form-control" placeholder="Search Your Car">
-            </form>
         </div>
         <div class="row">   
             <div class="col-sm-6 col-md-6 col-lg-4">
@@ -234,7 +253,7 @@
                             <span class="counter">10,0000</span> 
                             +
                         </h2>
-                        <h6>Happy Customer</h6>
+                        <h6>clients heureux</h6>
                     </div>
                 </div>
             </div>
@@ -243,10 +262,10 @@
                     <i class="flaticon-delivery-truck"></i>
                     <div class="average">
                         <h2>
-                            <span class="counter">29,000</span> 
+                            <span class="counter">60 </span> 
                             +
                         </h2>
-                        <h6>Vehicles We Have Done</h6>
+                        <h6>trajets par mois</h6>
                     </div>
                 </div>
             </div>
@@ -258,7 +277,7 @@
                             <span class="counter">52,870</span> 
                             +
                         </h2>
-                        <h6>Vehicles Done</h6>
+                        <h6>wagons en fonction</h6>
                     </div>
                 </div>
             </div>
@@ -275,21 +294,28 @@
             <p>Lorem Ipsum is simply dummy text of the printing and typesetting</p>
             <span>testimonial</span>
         </div>
-        <div class="testimonial-slider owl-carousel owl-theme">
-            <div class="testimonial-single-item text-center">
-                <i class="flaticon-quote"></i>
-                <p>Lorem ipsum dolor sit amet, consectetur 
-                adipiscing elit, sed do eiusmod tempor 
-                incididunt ut labore et dolore magna 
-                aliqua. Quis ipsum. 
-                </p>
-                <div class="profile">
-                    <img src="assets/img/testimonial/1.png" alt="">
-                    <h3>Peterson meir</h3>
-                    <span>Enventor</span>
+        <?php if(!$temoignages->first()){ ?>
+            <div style="text-align: center;" class="col-lg-12 alert alert-info">
+                <button type="button" class="close" data-dismiss="alert">
+                    <i class="fa fa-times"></i>
+                </button>
+                Aucun témoignage pour le moment !
+            </div>
+        <?php } ?>
+        <?php foreach($temoignages as $k => $temoignage){ ?>
+            <div class="testimonial-slider owl-carousel owl-theme">
+                <div class="testimonial-single-item text-center">
+                    <i class="flaticon-quote"></i>
+                    <p>
+                        <?php echo htmlentities($temoignage->Testimonial);?> 
+                    </p>
+                    <div class="profile">
+                        <?= $this->Html->image("/images/cat-profile.png", ['fullBase' => true, 'alt'=>'image']); ?>
+                        <h3><?php echo htmlentities($temoignage->user->FirstName);?> <?php echo htmlentities($temoignage->user->LastName);?></h3>
+                    </div>
                 </div>
             </div>
-        </div>
+        <?php } ?>
     </div>
 </section>
 <!-- End Testimonial Section -->

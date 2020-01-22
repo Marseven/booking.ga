@@ -1,96 +1,43 @@
-<!--Page Header-->
-<section class="page-header listing_page">
-    <div class="container">
-        <div class="page-header_wrap">
-            <div class="page-heading">
-                <h1>Véhicules</h1>
+<!-- Start All Page Banner -->
+<section class="all-page-banner item-one">
+    <div class="d-table">
+        <div class="d-tablecell">
+            <div class="container">
+                <div class="banner-text text-center">
+                    <h1>Trains</h1>
+                    <ul>
+                        <li>
+                            <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'index']) ?>">Accueil</a>
+                            <i class="fa fa-angle-right" aria-hidden="true"></i>
+                        </li>
+                        <li>Trains</li>
+                    </ul>
+                </div>
             </div>
-            <ul class="coustom-breadcrumb">
-                <li><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'index']) ?>">Accueil</a></li>
-                <li>Véhicules</li>
-            </ul>
         </div>
     </div>
-    <!-- Dark Overlay-->
-    <div class="dark-overlay"></div>
 </section>
-<!-- /Page Header-->
+<!-- End All Page Banner -->
 
-<!--Listing-->
-<section class="listing-page">
+<!-- Start Single Shop -->
+<section class="shop-section left-shop-section ptb-100">
     <div class="container">
         <div class="row">
-            <div class="col-md-9 col-md-push-3">
-                <div class="result-sorting-wrapper">
-                    <div class="sorting-count">
-                        <p><span><?php echo htmlentities($vehicules->count());?> Voitures</span></p>
-                    </div>
-                </div>
-                <?php if(!$vehicules->first()){ ?>
-                    <div style="text-align: center;" class="alert alert-info">
-                        <button type="button" class="close" data-dismiss="alert">
-                            <i class="fa fa-times"></i>
-                        </button>
-                        Pas De véhicules pour le moment !
-                    </div>
-                <?php } ?>
-                <?php
-                foreach($vehicules as $vehicule)
-                {  ?>
-                    <div class="product-listing-m gray-bg">
-                        <div class="product-listing-img"><?= $this->Html->image("admin/img/vehicleimages/".$vehicule->Vimage1, ['fullBase' => true, 'alt'=>'image', 'class'=>'img-responsive']); ?></div>
-                        <div class="product-listing-content">
-                            <h5><a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'vehiculeItem', 'vehicule' => $vehicule->id]) ?>"><?php echo htmlentities($vehicule->marque->BrandName);?> , <?php echo htmlentities($vehicule->VehiclesTitle);?></a></h5>
-                            <p class="list-price"><?php echo htmlentities(\App\Controller\AppController::change_number_format($vehicule->PricePerDay));?> FCFA/J</p>
-                            <p class="list-price"><?= $vehicule->PricePerHour == 0 ? '' : \App\Controller\AppController::change_number_format($vehicule->PricePerHour).' FCFA/H' ?></p>
-                            <ul>
-                                <li><i class="fa fa-user" aria-hidden="true"></i><?php echo htmlentities($vehicule->SeatingCapacity);?> Sièges</li>
-                                <li><i class="fa fa-snowflake-o" aria-hidden="true"></i>Climatisé</li>
-                                <li><i class="fa fa-tint" aria-hidden="true"></i><?php echo htmlentities($vehicule->FuelType);?></li>
-                                <li><i class="fa fa-cogs" aria-hidden="true"></i> <?= $vehicule->Transmission == 1 ? 'Automatique' : 'Manuel' ?></li>
-                            </ul>
-                            <a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'vehiculeItem', 'vehicule' => $vehicule->id]) ?>" class="btn">Details <span class="angle_arrow"><i class="fa fa-angle-right" aria-hidden="true"></i></span></a>
-                        </div>
-                    </div>
-                <?php } ?>
-                <div class="row">
-                    <div class="container">
-                        <ul class="pagination">
-                            <?php echo $this->Paginator->prev('Précédent'); ?>
-                            <?php echo $this->Paginator->numbers().' ' ; ?>
-                            <?php echo $this->Paginator->next('Suivant'); ?>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-
-            <!--Side-Bar-->
-            <aside class="col-md-3 col-md-pull-9">
-                <div class="sidebar_widget">
-                    <div class="widget_heading">
-                        <h5><i class="fa fa-filter" aria-hidden="true"></i> Trouver votre voiture </h5>
-                    </div>
-                    <div class="sidebar_filter">
-                        <form action="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'searchResult']) ?>" method="post">
+            <div class="col-lg-4">
+                <div class="right-shop">
+                    <div class="productsearchform perches-form-wrapper">
+                        <form class="form-wrap" action="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'searchResult']) ?>" method="post">
                             <div class="form-group select">
-                                <select class="form-control" name="brand">
-                                    <label class="form-label">Marque</label>
-                                    <?php foreach($marques as $marque){?>
-                                            <option value="<?php echo htmlentities($marque->id);?>"><?php echo htmlentities($marque->BrandName);?></option>
-                                    <?php } ?>
+                                <select class="form-control" name="classe">
+                                    <option>VIP</option>
+                                    <option>Classe 1</option>
+                                    <option>Classe 2</option>
                                 </select>
                             </div>
                             <div class="form-group select">
                                 <select class="form-control" name="type">
-                                    <label class="form-label">Type</label>
-                                    <option>4x4 Standard</option>
-                                    <option>4x4 Luxe</option>
-                                    <option>4x4 Utilitaire</option>
-                                    <option>4x4 Mini</option>
-                                    <option>Bus</option>
-                                    <option>Mini Bus</option>
-                                    <option>Berline Standard</option>
-                                    <option>Berline Luxe</option>
+                                    <option>Express</option>
+                                    <option>Omnibus</option>
                                 </select>
                             </div>
                             <div class="form-group">
@@ -99,9 +46,52 @@
                         </form>
                     </div>
                 </div>
-            </aside>
-            <!--/Side-Bar-->
+            </div>
+            <div class="col-lg-8">
+                <div class="left-shop">
+                    <div class="row">
+                        <?php if(!$trains->first()){ ?>
+                            <div style="text-align: center;" class="alert alert-info">
+                                <button type="button" class="close" data-dismiss="alert">
+                                    <i class="fa fa-times"></i>
+                                </button>
+                                Pas De trains pour le moment !
+                            </div>
+                        <?php } ?>
+                        <?php
+                        foreach($trains as $train)
+                        {  ?>
+                            <div class="col-sm-6 col-md-4 col-lg-4">
+                                <div class="single-shop">
+                                    <div class="shop-image">
+                                        <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>"><?= $this->Html->image("admin/img/trainimages/".$vehicule->Timage1, ['fullBase' => true, 'alt'=>'image']); ?></a>
+
+                                        <div class="add-cart-hover">
+                                            <div class="d-table">
+                                                <div class="d-tablecell">
+                                                    <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>" class="add-cart">Réserver</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="image-caption">
+                                        <a href="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'trainItem', 'train' => $train->id]) ?>"><h3><?php echo htmlentities($train->TrainTitle);?></h3></a>
+                                        <span>À partir de <?php echo htmlentities($train->PriceClasse2);?> FCFA</span>
+                                    </div>
+                                </div>
+                            </div>
+                        <?php } ?>  
+                    </div>
+                    <nav class="pagination-wrap">
+                        <ul class="pagination pagination-lg m-0">
+                            <?php echo $this->Paginator->prev('Précédent'); ?>  
+                            <?php echo $this->Paginator->numbers().' ' ; ?>
+                            <?php echo $this->Paginator->next('Suivant'); ?>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
         </div>
-        </div>
+    </div>
 </section>
-<!-- /Listing-->
+<!-- End Single Shop -->
