@@ -7,7 +7,7 @@ use Cake\ORM\TableRegistry;
 use Cake\I18n\FrozenTime;
 
 
-class trainController extends AppController
+class trainsController extends AppController
 {
 
     public function initialize()
@@ -17,18 +17,20 @@ class trainController extends AppController
         if($user){
             $user['confirmed_at'] = new FrozenTime($user['confirmed_at']);
             $user['reset_at'] = new FrozenTime($user['reset_at']);
+            $usersTable = TableRegistry::get('Users');
+            $user = $usersTable->newEntity($user);
             $this->set('user', $user);
         }
     }
 
     function menu(){
         $acc = '';
-        $trn = '';
+        $tra = '';
         $dms = '';
 
         $this->set(array(
             'acc' => $acc,
-            'trn' => $trn,
+            'tra' => $tra,
             'dms' => $dms,
         ));
     }
@@ -46,8 +48,10 @@ class trainController extends AppController
 
     public function add(){
         $this->menu();
+        $trainTable = TableRegistry::get('trains');
+        $categorieTable = TableRegistry::get('categories');
+        $semaineTable = TableRegistry::get('semaines');
         if ($this->request->is('post')) {
-            $trainTable = TableRegistry::get('train');
             $train = $trainTable->newEntity($this->request->getData());
             if($this->request->getData()['Timage2']["name"] != ''){
                 $train->Timage2 = $this->request->getData()["Timage2"]["name"];
@@ -55,29 +59,47 @@ class trainController extends AppController
             }
             $train->Timage1 = $this->request->getData()["Timage1"]["name"];
             move_uploaded_file($this->request->getData()["Timage1"]["tmp_name"],"img/admin/img/trainimages/".$this->request->getData()["Timage1"]["name"]);
-            if (isset($this->request->getData()["Transmission"]) && $this->request->getData()["Transmission"] == 'on'){
-                $train->Transmission = 1;
-            }else{
-                $train->Transmission = 0;
-            }
-            $train->Nombre_reel = $this->request->getData()["Nombre"];
             $trainTable->save($train);
             $this->Flash->set('Votre train a été ajouté avec succès.', ['element' => 'success']);
             $this->redirect(['action' => 'index']);
         }
+        $train = $trainTable->newEntity();
+        $this->set(compact('train'));
+        $this->set('_serialize', ['train']);
+
+        $categories = $categorieTable->find()->all();
+        $cat = array();
+        foreach($categories as $categorie){
+            $cat[$categorie->id] = $categorie->libelle;
+        }
+        $categories = $cat;
+        $this->set('categories', $categories);
+        $this->set('_serialize', ['categories']);
+
+        $semaines = $semaineTable->find()->all();
+        $sem = array();
+        foreach($semaines as $semaine){
+            $sem[$semaine->id] = $semaine->libelle;
+        }
+        $semaines = $sem;
+        $this->set('semaines', $semaines);
+        $this->set('_serialize', ['semaines']);
+
         $this->render('add', 'default-admin');
     }
 
     public function edit()
     {
         $this->menu();
+        $categorieTable = TableRegistry::get('categories');
+        $semaineTable = TableRegistry::get('semaines');
 
         if (empty($this->request->params['?']['train'])) {
             $this->Flash->error('Informations manquantes.');
             $this->redirect(['controller' => 'Users', 'action' => 'logout']);
         } else {
             $id = (int)$this->request->params['?']['train'];
-            $trainTable = TableRegistry::get('train');
+            $trainTable = TableRegistry::get('trains');
             $train = $trainTable->find()
                 ->where(
                     [
@@ -104,11 +126,7 @@ class trainController extends AppController
                     }else{
                         $train_edit->Timage2 = $train->Timage2;
                     }
-                    if (isset($this->request->getData()["Transmission"]) && $this->request->getData()["Transmission"] == 'on'){
-                        $train_edit->Transmission = 1;
-                    }else{
-                        $train_edit->Transmission = 0;
-                    }
+                    
                     $train_edit->id = $train->id;
                     if ($trainTable->save($train_edit)) {
                         $this->Flash->success('Votre train a été mise à jour avec succès.');
@@ -118,7 +136,25 @@ class trainController extends AppController
                     }
                 }
             }
-            $this->set('train', $train);
+            
+            $categories = $categorieTable->find()->all();
+            $cat = array();
+            foreach($categories as $categorie){
+                $cat[$categorie->id] = $categorie->libelle;
+            }
+            $categories = $cat;
+            $this->set('categories', $categories);
+            $this->set('_serialize', ['categories']);
+
+            $semaines = $semaineTable->find()->all();
+            $sem = array();
+            foreach($semaines as $semaine){
+                $sem[$semaine->id] = $semaine->libelle;
+            }
+            $semaines = $sem;
+            $this->set('semaines', $semaines);
+            $this->set('_serialize', ['semaines']);
+            $this->set('edit_train', $train);
             $this->render('edit', 'default-admin');
         }
     }

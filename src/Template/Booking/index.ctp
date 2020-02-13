@@ -48,50 +48,34 @@
             <?= $this->Form->create($search, ['url' => ['controller' => 'Transports', 'action' => 'searchResult']]); ?>
                 <div class="form-wrap">
                     <div class="single-select">
-                        <label class="form-label">Lieu de départ </label>
+                        <label class="form-label">Lieu de départ : </label>
                         <select class="form-control" id="lieu_depart" name="lieu_depart">
                             <option value="Owendo">Owendo</option>
                             <option value="Franceville">Franceville</option>
                         </select>
                     </div>
-                    
-                    <div class="single-select">
-                        <label class="form-label">Type de Train </label>
-                        <select class="form-control" name="type">
-                            <option>Express</option>
-                            <option>Omnibus</option>
-                        </select>
-                    </div>
 
                     <div class="single-select">
-                            <label class="form-label">Classe</label>
-                            <select class="form-control" name="classse">
-                                <option>VIP</option>
-                                <option>Classe 1</option>
-                                <option>Classe 2</option>
-                            </select>
-                    </div>
-
-                    <div class="single-select">
-                        <label class="form-label">Lieu d'arrivé </label>
-                        <select class="form-control" id="lieu_depart" name="lieu_depart">
+                        <label class="form-label">Lieu d'arrivé : </label>
+                        <select class="form-control" id="lieu_arrive" name="lieu_arrive">
                             <option value="Owendo">Owendo</option>
                             <option value="Franceville">Franceville</option>
                         </select>
                     </div>
-                </div>
-                <div class="form-wrap">
-                    <div class="single-select" style="margin-right:10px;">
-                        <label class="form-label">Date de départ </label>
-                        <div class="select">
-                            <input type="date" class="form-control" id="J-demo-03" name="date_depart" placeholder="Date de Départ" required>
-                        </div>
-                    </div>
 
                     <div class="single-select">
-                        <label class="form-label">Date d'arrivé </label>
+                        <label class="form-label">Classe : </label>
+                        <select class="form-control" name="classe">
+                            <option>VIP</option>
+                            <option>Classe 1</option>
+                            <option>Classe 2</option>
+                        </select>
+                    </div>
+
+                    <div class="single-select" style="margin-right: 5%">
+                        <label class="form-label">Départ le : </label>
                         <div class="select">
-                            <input type="date" class="form-control" id="J-demo-04" name="date_arriver" placeholder="Date de Retour">
+                            <input type="date" class="form-control" id="J-demo-04" name="date_depart" placeholder="Date de Départ">
                         </div>
                     </div>
 

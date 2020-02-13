@@ -64,7 +64,7 @@
                         <div class="form-group col-md-3 col-sm-6">
                             <label class="form-label">Date d'arrivé *</label>
                             <div class="select">
-                                <input type="text" class="mt10px input form-control white_bg" id="J-demo-04" name="date_arriver" placeholder="Date de Retour*" required>
+                                <input type="text" class="mt10px input form-control white_bg" id="J-demo-04" name="date_arriver" placeholder="Date de Retour" >
                                 <script type="text/javascript">
                                     $('#J-demo-04').dateTimePicker({
                                         mode: 'dateTime',

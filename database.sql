@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : localhost:3306
--- Généré le :  ven. 07 fév. 2020 à 10:25
+-- Généré le :  jeu. 13 fév. 2020 à 11:18
 -- Version du serveur :  5.7.26
 -- Version de PHP :  7.3.8
 
@@ -23,22 +23,41 @@ SET time_zone = "+00:00";
 CREATE TABLE `categories` (
   `id` int(11) NOT NULL,
   `libelle` varchar(100) NOT NULL,
+  `id_user` int(11) NOT NULL,
   `creer` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `modifier` datetime NOT NULL
+  `modifier` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `categories`
+--
+
+INSERT INTO `categories` (`id`, `libelle`, `id_user`, `creer`, `modifier`) VALUES
+(1, 'Express', 1, '2020-02-13 11:10:40', NULL),
+(2, 'Omnibus', 1, '2020-02-13 11:10:40', NULL);
 
 -- --------------------------------------------------------
 
 --
--- Structure de la table `classe`
+-- Structure de la table `classes`
 --
 
-CREATE TABLE `classe` (
+CREATE TABLE `classes` (
   `id` int(11) NOT NULL,
   `libelle` varchar(100) NOT NULL,
+  `id_user` int(11) NOT NULL,
   `creer` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `modifier` datetime NOT NULL
+  `modifier` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `classes`
+--
+
+INSERT INTO `classes` (`id`, `libelle`, `id_user`, `creer`, `modifier`) VALUES
+(1, 'VIP', 1, '2020-02-13 11:12:17', NULL),
+(2, 'Classe 1', 1, '2020-02-13 11:12:17', NULL),
+(3, 'Classe 2', 1, '2020-02-13 11:12:17', NULL);
 
 -- --------------------------------------------------------
 
@@ -86,17 +105,16 @@ CREATE TABLE `paiements` (
 CREATE TABLE `reservations` (
   `id` int(11) NOT NULL,
   `reference` varchar(100) DEFAULT NULL,
-  `userEmail` int(11) DEFAULT NULL,
-  `TrainId` int(11) DEFAULT NULL,
-  `FromDate` varchar(20) DEFAULT NULL,
-  `ToDate` varchar(20) DEFAULT NULL,
-  `FromPlace` varchar(50) DEFAULT NULL,
-  `ToPlace` varchar(50) DEFAULT NULL,
+  `GoDate` date DEFAULT NULL,
+  `BackDate` date DEFAULT NULL,
+  `FromPlace` int(11) DEFAULT NULL,
+  `ToPlace` int(11) DEFAULT NULL,
   `NombrePlace` int(11) NOT NULL,
-  `Classe` int(11) NOT NULL,
-  `Price` double DEFAULT NULL,
+  `Tarif` double DEFAULT NULL,
   `Status` varchar(50) DEFAULT NULL,
   `Payment` varchar(50) DEFAULT NULL,
+  `id_train` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
   `PostingDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `ExpireDate` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -109,10 +127,23 @@ CREATE TABLE `reservations` (
 
 CREATE TABLE `semaines` (
   `id` int(11) NOT NULL,
-  `jour` int(100) NOT NULL,
+  `jour` varchar(100) NOT NULL,
+  `id_categorie` int(11) NOT NULL,
+  `id_ville` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
   `creer` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modifier` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `semaines`
+--
+
+INSERT INTO `semaines` (`id`, `jour`, `id_categorie`, `id_ville`, `id_user`, `creer`, `modifier`) VALUES
+(1, 'Lundi', 1, 1, 1, '2020-02-13 11:29:55', NULL),
+(2, 'Lundi', 2, 2, 1, '2020-02-13 11:29:55', NULL),
+(3, 'Mardi', 2, 1, 1, '2020-02-13 11:29:55', NULL),
+(4, 'Mardi', 1, 2, 1, '2020-02-13 11:29:55', NULL);
 
 -- --------------------------------------------------------
 
@@ -124,7 +155,8 @@ CREATE TABLE `tarifs` (
   `id` int(11) NOT NULL,
   `depart` int(11) NOT NULL,
   `arrive` int(11) NOT NULL,
-  `type` varchar(100) NOT NULL,
+  `classe` int(11) NOT NULL,
+  `categorie` int(11) NOT NULL,
   `prix` int(11) NOT NULL,
   `creer` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `modifier` datetime DEFAULT NULL
@@ -153,16 +185,14 @@ CREATE TABLE `temoignages` (
 CREATE TABLE `trains` (
   `id` int(11) NOT NULL,
   `Title` varchar(150) DEFAULT NULL,
-  `PriceClasse1` int(11) DEFAULT '0',
-  `PriceClasse2` int(11) DEFAULT '0',
-  `PriceVip` int(11) NOT NULL,
-  `Type` varchar(100) DEFAULT NULL,
   `NombrePlace` int(11) DEFAULT NULL,
   `NombreVagon` int(11) NOT NULL,
   `Nombre_reel` int(11) DEFAULT NULL,
-  `Depart` varchar(100) NOT NULL,
   `Timage1` varchar(255) DEFAULT NULL,
   `Timage2` varchar(255) DEFAULT NULL,
+  `id_categorie` int(11) NOT NULL,
+  `id_semaine` int(11) NOT NULL,
+  `id_user` int(11) NOT NULL,
   `RegDate` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `UpdationDate` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -195,6 +225,13 @@ CREATE TABLE `users` (
   `reset_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`id`, `FirstName`, `LastName`, `Email`, `Password`, `ContactNo`, `BornDate`, `Address`, `ZipCode`, `City`, `Province`, `Country`, `role`, `RegDate`, `UpdationDate`, `confirmed_token`, `reset_token`, `confirmed_at`, `reset_at`) VALUES
+(1, 'Richard', 'Mebodo', 'mebodoaristide@yahoo.fr', '$2y$10$t1jVt.HiXEjoC2z9iH5zKu0p4yiLQ5XRgQiZwgMNyKNF7DEJOpjgW', '074228306', '1996-08-19', NULL, NULL, NULL, NULL, NULL, 'admin', '2020-02-11 17:06:44', '2020-02-11 17:10:49', NULL, NULL, '2020-02-11 00:00:00', NULL);
+
 -- --------------------------------------------------------
 
 --
@@ -205,9 +242,18 @@ CREATE TABLE `villes` (
   `id` int(11) NOT NULL,
   `libelle` varchar(100) NOT NULL,
   `province` varchar(100) NOT NULL,
+  `id_user` int(11) NOT NULL,
   `creer` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  `modifier` datetime NOT NULL
+  `modifier` datetime DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Déchargement des données de la table `villes`
+--
+
+INSERT INTO `villes` (`id`, `libelle`, `province`, `id_user`, `creer`, `modifier`) VALUES
+(1, 'Owendo', 'Estuaire', 1, '2020-02-13 11:36:16', NULL),
+(2, 'Franceville', 'Haut-Ogoué', 1, '2020-02-13 11:36:16', NULL);
 
 --
 -- Index pour les tables déchargées
@@ -217,12 +263,13 @@ CREATE TABLE `villes` (
 -- Index pour la table `categories`
 --
 ALTER TABLE `categories`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `id_user` (`id_user`);
 
 --
--- Index pour la table `classe`
+-- Index pour la table `classes`
 --
-ALTER TABLE `classe`
+ALTER TABLE `classes`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -287,13 +334,13 @@ ALTER TABLE `villes`
 -- AUTO_INCREMENT pour la table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
--- AUTO_INCREMENT pour la table `classe`
+-- AUTO_INCREMENT pour la table `classes`
 --
-ALTER TABLE `classe`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+ALTER TABLE `classes`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT pour la table `newsletters`
@@ -317,7 +364,7 @@ ALTER TABLE `reservations`
 -- AUTO_INCREMENT pour la table `semaines`
 --
 ALTER TABLE `semaines`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT pour la table `tarifs`
@@ -341,10 +388,20 @@ ALTER TABLE `trains`
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT pour la table `villes`
 --
 ALTER TABLE `villes`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `categories`
+--
+ALTER TABLE `categories`
+  ADD CONSTRAINT `categories_ibfk_1` FOREIGN KEY (`id_user`) REFERENCES `users` (`id`);

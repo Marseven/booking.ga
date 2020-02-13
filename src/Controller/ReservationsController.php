@@ -27,7 +27,7 @@ class ReservationsController extends AppController
     public function initialize()
     {
         parent::initialize();
-        $this->Auth->allow(['booking', 'validateBooking', 'bookingSucces', 'arriver', 'ebilling', 'ebillingNotif', 'gateway', 'printed']);
+        $this->Auth->allow(['booking', 'validateBooking', 'bookingSucces', 'arriver', 'printed']);
         $user = $this->Auth->user();
         if(isset($user)){
             $user['confirmed_at'] = new FrozenTime($user['confirmed_at']);
@@ -46,12 +46,12 @@ class ReservationsController extends AppController
 
     function menu(){
         $acc = '';
-        $veh = '';
+        $tra = '';
         $dms = '';
 
         $this->set(array(
             'acc' => $acc,
-            'veh' => $veh,
+            'tra' => $tra,
             'dms' => $dms,
         ));
     }
@@ -60,7 +60,7 @@ class ReservationsController extends AppController
         $this->menu();
         if(empty($this->request->params['?']['reference'])){
             $this->Flash->error('Information manquante.');
-            $this->redirect(['controller' => 'Transports','action' => 'index']);
+            $this->redirect(['controller' => 'Booking','action' => 'index']);
         }
 
         $reservationTable = TableRegistry::get('reservations');
@@ -111,9 +111,9 @@ class ReservationsController extends AppController
         $trains_related = $trainTable->find()
             ->where(
                 [
-                    'Type' => $train->Type,
+                    'id_categorie' => $train->id_categorie,
                     'trains.id <>' => $train->id,
-                    'Classe' => $train->Classe
+                    'id_semaine' => $train->id_semaine
                 ]
             )
             ->limit(5)
@@ -124,388 +124,14 @@ class ReservationsController extends AppController
 
     }
 
-    public function validateBooking(){
-        $reservationTable = TableRegistry::get('Reservations');
-        if(empty($this->request->params['?']['train'])){
-            $this->Flash->error('Information manquante.');
-            $this->redirect(['controller' => 'Transports','action' => 'index']);
-        }else{
-            $id = (int)$this->request->params['?']['train'];
-        }
-        if ($this->request->is('post')) {
-            $infos = AppController::date_verified($_POST['date_depart'], $_POST['date_arriver']);
-            if($infos == false){
-                $this->Flash->error('Mauvaises Dates.');
-                $this->redirect(['controller' => 'Reservations','action' => 'booking', 'train' => $id]);
-            }else{
-                $aujourdhui = date('Y-m-d H:m');
-                $aujourdhui = new \DateTime($aujourdhui);
-                $aujourdhui = $aujourdhui->add(new \DateInterval('PT2H'));
-                $date_depart = new \DateTime($_POST['date_depart']);
-                $date_arriver = new \DateTime($_POST['date_arriver']);
-
-                $intervale = AppController::difference_temps($aujourdhui, $date_depart);
-                if ($intervale < 2.00) {
-                    $this->Flash->error('La réservation doit être effectué au moins 2 heures avant l\'heure de départ.');
-                    $this->redirect(['controller' => 'Reservations','action' => 'booking', 'train' => $id]);
-                }
-                $infos['vid'] = $id;
-                if(ReservationsTable::is_aviable($infos)){
-                    $nbre_jour_reserver = $date_arriver->diff($date_depart);
-                    $jour = (int)$nbre_jour_reserver->d;
-                    $heure = (int)$nbre_jour_reserver->h;
-                    $nbre_jour = $jour.' jour(s) & '.$heure.' Heure(s)';
-                    $date_depart = explode(' ', $_POST['date_depart']);
-                    $date_arriver = explode(' ', $_POST['date_arriver']);
-                    $trainTable = TableRegistry::get('trains');
-
-                    $train = $trainTable->find()
-                        ->where(
-                            [
-                                'trains.id' => $id,
-                            ]
-                        )
-                        ->all();
-                    $train = $train->first();
-                    if($train->PricePerHour != 0){
-                    	$prix_total = ($jour*$train->PricePerDay)+($heure*$train->PricePerHour);
-                    }else{
-                    	$heure_cal = round(($heure/24), 2);
-                		$prix_total = ($jour*$train->PricePerDay)+($heure_cal*$train->PricePerDay);
-                    }
-                    $_SESSION['panier']['prix'] = ($jour*$train->PricePerDay)+($heure*$train->PricePerHour);
-                    $_SESSION['panier']['train']['lieu_depart'] =  $_POST['lieu_depart'];
-                    $_SESSION['panier']['train']['lieu_arriver'] =  $_POST['lieu_arriver'];
-                    $_SESSION['panier']['train']['date_depart'] =  $_POST['date_depart'];
-                    $_SESSION['panier']['train']['date_arriver'] =  $_POST['date_arriver'];
-                    $_SESSION['panier']['train']['id'] =  $id;
-                    $_SESSION['panier']['count']=1;
-                    $this->set('train', $train);
-                    $this->set('prix_total', $prix_total);
-                    $this->set([
-                        'nbre_jour' => $nbre_jour,
-                        'date_depart' => $date_depart,
-                        'date_arriver' => $date_arriver,
-                        'lieu_arriver' => $_POST['lieu_arriver'],
-                        'lieu_depart' => $_POST['lieu_depart']
-                    ]);
-                }else{
-                    $this->Flash->error('Ce modèle n\'est pas disponible pour cette période, Merci d\'essayer une autre période.');
-                    $this->redirect(['controller' => 'Reservations','action' => 'booking', 'train' => $id]);
-                }
-            }
-        }elseif(isset($_SESSION['panier']['train']) && !empty($_SESSION['panier']['train'])){
-            $aujourdhui = date('Y-m-d H:m');
-
-            $aujourdhui = new \DateTime($aujourdhui);
-            $date_depart = new \DateTime($_SESSION['panier']['train']['date_depart']);
-            $date_arriver = new \DateTime($_SESSION['panier']['train']['date_arriver']);
-
-            $infos = array();
-            $infos['depart'] = $date_depart;
-            $infos['arriver'] = $date_arriver;
-            $infos['vid'] = $id;
-            if(ReservationsTable::is_aviable($infos)){
-                $nbre_jour_reserver = $date_arriver->diff($date_depart);
-                $jour = (int)$nbre_jour_reserver->d;
-                $heure = (int)$nbre_jour_reserver->h;
-                $nbre_jour = $jour.' jour(s) & '.$heure.' Heure(s)';
-                $date_depart = explode(' ', $_SESSION['panier']['train']['date_depart']);
-                $date_arriver = explode(' ', $_SESSION['panier']['train']['date_arriver']);
-                $trainTable = TableRegistry::get('trains');
-
-                $train = $trainTable->find()
-                    ->where(
-                        [
-                            'trains.id' => $id,
-                        ]
-                    )
-                    ->all();
-                $train = $train->first();
-                $prix_total = ($jour*$train->PricePerDay)+($heure*$train->PricePerHour);
-                $this->set('train', $train);
-                $this->set('prix_total', $prix_total);
-                $this->set([
-                    'nbre_jour' => $nbre_jour,
-                    'date_depart' => $date_depart,
-                    'date_arriver' => $date_arriver,
-                    'lieu_arriver' => $_SESSION['panier']['train']['lieu_arriver'],
-                    'lieu_depart' => $_SESSION['panier']['train']['lieu_depart']
-                ]);
-            }else{
-                $this->Flash->error('Période déjà prise pour ce véhicule, Merci d\'essayer une autre période.');
-                $this->redirect(['controller' => 'Reservations','action' => 'booking', 'train' => $id]);
-            }
-
-        }else{
-            $this->Flash->error('Panier Vide.');
-            $this->redirect(['controller' => 'Transports','action' => 'index', 'reset' => 'true']);
-        }
-    }
-
-    public function gateway(){
-        $moyen_paiement = '';
-        if($this->request->is('post')){
-            if($_POST['moyen_paiement'] == 'Ebilling'){
-                $moyen_paiement = 'ebilling';
-            }elseif($_POST['moyen_paiement'] == 'Visa'){
-                $moyen_paiement = 'visa';
-            }elseif($_POST['moyen_paiement'] == 'Arriver'){
-                $moyen_paiement = 'arriver';
-            }else{
-                $this->redirect(['controller' => 'Transports','action' => 'index', 'reset' => 'true']);
-            }
-
-
-            echo "
-            <form style=\"text-align: center;\"  method=\"post\" name=\"frm\" action=\"/reservations/".$moyen_paiement."\">
-                <input type=\"hidden\" name=\"montant\" value=\"".$_POST['montant']."\">
-                <input type=\"hidden\" name=\"lieu_depart\" value=\"". $_POST['lieu_depart'] ."\">
-                <input type=\"hidden\" name=\"lieu_arriver\" value=\"". $_POST['lieu_arriver'] ."\">
-                <input type=\"hidden\" name=\"date_depart\" value=\"". $_POST['date_depart'] ."\">
-                <input type=\"hidden\" name=\"date_arriver\" value=\"". $_POST['date_arriver'] ."\">
-                <input type=\"hidden\" name=\"train\" value=\"". $_POST['train'] ."\">
-            </form>";
-            echo "<script language='JavaScript'>";
-            echo "document.frm.submit();";
-            echo "</script>";
-            exit();
-        }
-
-    }
-
-    public function ebilling(){
+    public function Airtelmoney(){
 
         if (empty($_SESSION['panier']['train'])){
             $_SESSION['panier']['prix'] = $_POST['montant'];
             $_SESSION['panier']['train']['lieu_depart'] =  $_POST['lieu_depart'];
             $_SESSION['panier']['train']['lieu_arriver'] =  $_POST['lieu_arriver'];
             $_SESSION['panier']['train']['date_depart'] =  $_POST['date_depart'];
-            $_SESSION['panier']['train']['date_arriver'] =  $_POST['date_arriver'];
-            $_SESSION['panier']['train']['id'] =  $_POST['train'];
-            $_SESSION['panier']['count']=1;
-        }
-        
-        if ($this->request->is('post') && isset($_POST['moyen_paiement']) && $_POST['moyen_paiement'] == 'Ebilling') {
-            // =============================================================
-            // ===================== Setup Attributes ===========================
-            // =============================================================
-            // E-Billing server URL
-            /*$SERVER_URL = "https://www.billing-easy.com/api/v1/merchant/e_bills";
-
-            // Username
-            $USER_NAME = '[USERNAME]';
-
-            // SharedKey
-            $SHARED_KEY = '[SHAREDKEY]';
-
-            // POST URL
-            $POST_URL = 'https://www.billing-easy.net';*/
-
-            $SERVER_URL = "http://lab.billing-easy.net/api/v1/merchant/e_bills";
-
-            // Username
-            $USER_NAME = 'ltc';
-
-            // SharedKey
-            $SHARED_KEY = '44983837-14ad-4177-bd43-649cfbad0985';
-
-            // POST URL
-            $POST_URL = 'http://sandbox.billing-easy.net';
-
-            // Check mandatory attributes have been supplied in Http Session
-            if (empty($_POST['montant'])) die("Error : eb_amount_m parameter is not provided. ");
-            if (empty($_POST['email'])) die("Error : eb_email_m parameter is not provided. ");
-            if (empty($_POST['telephone'])) die("Error : eb_msisdn_m parameter is not provided. ");
-            $reference = AppController::str_random(6);
-            $trainTable = TableRegistry::get('trains');
-
-            $train = $trainTable->find()
-                ->where(
-                    [
-                        'trains.id' => $_POST['train'],
-                    ]
-                )
-                ->all();
-            $train = $train->first();
-            $aujourdhui = date('Y-m-d H:m');
-            $aujourdhui = new \DateTime($aujourdhui);
-            $aujourdhui = $aujourdhui->add(new \DateInterval('PT2H'));
-            $date_depart = new \DateTime($_POST['date_depart']);
-            $date_arriver = new \DateTime($_POST['date_arriver']);
-            $nbre_jour_reserver = $date_arriver->diff($date_depart);
-            $jour = (int)$nbre_jour_reserver->d;
-            $heure = (int)$nbre_jour_reserver->h;
-
-            // Fetch all data (including those not optional) from session
-            $eb_amount = (int)$_SESSION['panier']['prix'];
-            $eb_shortdescription = "Réservation chez Les Transports Citadins";
-            $eb_reference = $reference;
-            $eb_email = $_POST['email'];
-            $eb_msisdn = $_POST['telephone'];
-            $eb_name = $_POST['nom'] . ' ' . $_POST['prenom'];
-            $eb_address = $_POST['adresse'];
-            $eb_city = $_POST['ville'];
-            $eb_detaileddescription = "Réservation d'une ".$train->marque->classeName." ".$train->VehiclesTitle." pour une durée de ".$jour." jour(s) et ".$heure." heure(s).";
-            $eb_additionalinfo = "Merci d'avoir réservé chez Les Tranports Citadins.";
-            $eb_callbackurl = 'http://transports-citadins.jobs-conseil.com/reservations/bookingSucces/?get=Ebilling&ref='.$eb_reference;
-
-            $date = date('Y-m-d H:m:s');
-
-            // =============================================================
-            // ============== E-Billing server invocation ==================
-            // =============================================================
-            $global_array =
-                [
-                    'payer_email' => $eb_email,
-                    'payer_msisdn' => $eb_msisdn,
-                    'amount' => $eb_amount,
-                    'short_description' => $eb_shortdescription,
-                    'description' => $eb_detaileddescription,
-                    'due_date' => date('d/m/Y', time() + 86400),
-                    'external_reference' => $eb_reference,
-                    'payer_name' => $eb_name,
-                    'payer_address' => $eb_address,
-                    'payer_city' => $eb_city,
-                    'additional_info' => $eb_additionalinfo
-                ];
-
-
-            $content = json_encode($global_array);
-            $curl = curl_init($SERVER_URL);
-            curl_setopt($curl, CURLOPT_USERPWD, $USER_NAME . ":" . $SHARED_KEY);
-            curl_setopt($curl, CURLOPT_HEADER, false);
-            curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-            curl_setopt($curl, CURLOPT_HTTPHEADER, array("Content-type: application/json"));
-            curl_setopt($curl, CURLOPT_POST, true);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $content);
-            $json_response = curl_exec($curl);
-
-            $status = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-
-            if ($status != 201) {
-                die("Error: call to URL $url failed with status $status, response $json_response, curl_error " . curl_error($curl) . ", curl_errno " . curl_errno($curl));
-            }
-
-            $connection = ConnectionManager::get('default');
-            $date = date('Y-m-d H:m:s');
-            $etat = "En Cours";
-            $_POST['due_date'] = $date;
-            $results = $connection->execute('INSERT INTO ebilling (email, phone, amount_order, description, date, external_reference, first_name, last_name, address, city, etat)
-					 VALUES ("'.$global_array['payer_email'].'","'.$global_array['payer_msisdn'].'","'.$global_array['amount'].'","'.$global_array['short_description'].'","'.$date.'","'.$global_array['external_reference'].'","'.$_POST['nom'].'","'.$_POST['prenom'].'","'.$global_array['payer_address'].'","'.$global_array['payer_city'].'","'.$etat.'")');
-
-            $userTable = TableRegistry::get('Users');
-
-            $user = $userTable->find()
-                ->where(
-                    [
-                        'Email' => $_POST['email'],
-                    ]
-                )
-                ->all();
-
-            if ($user->first()) {
-                $user_edit = $userTable->newEntity();
-                $user_edit->FirstName = $_POST['nom'];
-                $user_edit->LastName = $_POST['prenom'];
-                $user_edit->Email = $_POST['email'];
-                $user_edit->Conctactno = $_POST['telephone'];
-                $user_edit->BornDate = $_POST['date_naissance'];
-                $user_edit->Address = $_POST['adresse'];
-                $user_edit->City = $_POST['ville'];
-                $user_edit->Country = $_POST['pays'];
-                $user_edit->ZipCode = $_POST['poste'];
-                $user_edit->Province = $_POST['province'];
-                $user_edit->id = $user->first()->id;
-                $userTable->save($user_edit);
-                $_SESSION['panier']['train']['userEmail'] =  $user_edit->id;
-            } else {
-                $user = $userTable->newEntity();
-                $user->FirstName = $_POST['nom'];
-                $user->LastName = $_POST['prenom'];
-                $user->Email = $_POST['email'];
-                $user->Conctactno = $_POST['telephone'];
-                $user->BornDate = $_POST['date_naissance'];
-                $user->Address = $_POST['adresse'];
-                $user->City = $_POST['ville'];
-                $user->Country = $_POST['pays'];
-                $user->ZipCode = $_POST['poste'];
-                $user->Province = $_POST['province'];
-                $userTable->save($user);
-                $_SESSION['panier']['train']['userEmail'] =  $user->id;
-            }
-
-            $reservationTable = TableRegistry::get('Reservations');
-            $reservation = $reservationTable->newEntity();
-            $reservation->Status = 'En Traitement';
-            $reservation->reference = $reference;
-            $reservation->userEmail = $_SESSION['panier']['train']['userEmail'];
-            $reservation->VehicleId = $_SESSION['panier']['train']['id'];
-            $reservation->FromDate = $_SESSION['panier']['train']['date_depart'];
-            $reservation->ToDate = $_SESSION['panier']['train']['date_arriver'];
-            $reservation->FromPlace = $_SESSION['panier']['train']['lieu_depart'];
-            $reservation->ToPlace = $_SESSION['panier']['train']['lieu_arriver'];
-            $reservation->Price = $_SESSION['panier']['prix'];
-            $reservation->Payment = 'Ebilling';
-            $reservationTable->save($reservation);
-
-            curl_close($curl);
-            $response = json_decode($json_response, true);
-
-            echo "<form action='" . $POST_URL . "' method='post' name='frm'>";
-            echo "<input type='hidden' name='invoice_number' value='" . $response['e_bill']['bill_id'] . "'>";
-            echo "<input type='hidden' name='eb_callbackurl' value='" . $eb_callbackurl . "'>";
-            echo "</form>";
-            echo "<script language='JavaScript'>";
-            echo "document.frm.submit();";
-            echo "</script>";
-            exit();
-        }
-        $trainTable = TableRegistry::get('trains');
-
-        $train = $trainTable->find()
-            ->where(
-                [
-                    'trains.id' => $_POST['train'],
-                ]
-            )
-            ->all();
-        $train = $train->first();
-        $this->set('train', $train);
-    }
-
-    public function ebillingNotif(){
-        if($this->request->is('post')){
-            $connection = ConnectionManager::get('default');
-            $_POST['etat'] = "Payée";
-            $results = $connection
-                ->execute(
-                    "UPDATE ebilling SET paymentsystem = '".$_POST['paymentsystem']."', transactionid = '".$_POST['transactionid']."', billingid = '".$_POST['billingid']."', amount = '".$_POST['amount']."', etat = '".$_POST['etat']."'  WHERE external_reference = '".$_POST['reference']."'"
-                );
-            if($results){
-                http_response_code(200);
-                echo http_response_code();
-                exit();
-            }else{
-                http_response_code(401);
-                echo http_response_code();
-                exit();
-            }
-        }else{
-            http_response_code(402);
-            echo http_response_code();
-            exit();
-        }
-    }
-
-    public function arriver(){
-
-        if (empty($_SESSION['panier']['train'])){
-            $_SESSION['panier']['prix'] = $_POST['montant'];
-            $_SESSION['panier']['train']['lieu_depart'] =  $_POST['lieu_depart'];
-            $_SESSION['panier']['train']['lieu_arriver'] =  $_POST['lieu_arriver'];
-            $_SESSION['panier']['train']['date_depart'] =  $_POST['date_depart'];
-            $_SESSION['panier']['train']['date_arriver'] =  $_POST['date_arriver'];
+            $_SESSION['panier']['train']['classe'] =  $_POST['classe'];
             $_SESSION['panier']['train']['userEmail'] =  $_POST['email'];
             $_SESSION['panier']['train']['id'] =  $_POST['train'];
             $_SESSION['panier']['count']=1;
@@ -582,6 +208,113 @@ class ReservationsController extends AppController
         }
     }
 
+    public function validateBooking(){
+        $reservationTable = TableRegistry::get('Reservations');
+        if(empty($this->request->params['?']['train'])){
+            $this->Flash->error('Information manquante.');
+            $this->redirect(['controller' => 'Transports','action' => 'index']);
+        }else{
+            $id = (int)$this->request->params['?']['train'];
+        }
+        if ($this->request->is('post')) {
+            
+                $aujourdhui = date('Y-m-d H:m');
+                $aujourdhui = new \DateTime($aujourdhui);
+                $aujourdhui = $aujourdhui->add(new \DateInterval('PT2H'));
+                $date_depart = new \DateTime($_POST['date_depart']);
+                
+                $intervale = AppController::difference_temps($aujourdhui, $date_depart);
+                if ($intervale < 2.00) {
+                    $this->Flash->error('La réservation doit être effectué au moins 2 heures avant l\'heure de départ.');
+                    $this->redirect(['controller' => 'Reservations','action' => 'booking', 'train' => $id]);
+                }
+                $infos['vid'] = $id;
+                if(ReservationsTable::is_aviable($infos)){
+                    $date_depart = explode(' ', $_POST['date_depart']);
+                    $trainTable = TableRegistry::get('trains');
+
+                    $train = $trainTable->find()
+                        ->where(
+                            [
+                                'trains.id' => $id,
+                            ]
+                        )
+                        ->all();
+                    $train = $train->first();
+                    $tarif = $tarifTable->find()
+                        ->where(
+                            [
+                                'tarifs.id' => $id,
+                            ]
+                        )
+                        ->all();
+                    $_SESSION['panier']['prix'] = $tarif->prix;
+                    $_SESSION['panier']['train']['lieu_depart'] =  $_POST['lieu_depart'];
+                    $_SESSION['panier']['train']['lieu_arriver'] =  $_POST['lieu_arriver'];
+                    $_SESSION['panier']['train']['date_depart'] =  $_POST['date_depart'];
+                    $_SESSION['panier']['train']['classe'] =  $_POST['classe'];
+                    $_SESSION['panier']['train']['id'] =  $id;
+                    $_SESSION['panier']['count']=1;
+                    $this->set('train', $train);
+                    $this->set('prix_total', $prix_total);
+                    $this->set([
+                        'date_depart' => $date_depart,
+                        'classe' => $classe,
+                        'lieu_arriver' => $_POST['lieu_arriver'],
+                        'lieu_depart' => $_POST['lieu_depart']
+                    ]);
+                }else{
+                    $this->Flash->error('Il y a plus de place pour cette date, Merci d\'essayer une autre date.');
+                    $this->redirect(['controller' => 'Reservations','action' => 'booking', 'train' => $id]);
+                }
+            
+        }elseif(isset($_SESSION['panier']['train']) && !empty($_SESSION['panier']['train'])){
+            $aujourdhui = date('Y-m-d H:m');
+
+            $aujourdhui = new \DateTime($aujourdhui);
+            $date_depart = new \DateTime($_SESSION['panier']['train']['date_depart']);
+            
+
+            $infos = array();
+            $infos['depart'] = $date_depart;
+            $infos['tid'] = $id;
+            if(ReservationsTable::is_aviable($infos)){
+                $date_depart = explode(' ', $_SESSION['panier']['train']['date_depart']);
+                $trainTable = TableRegistry::get('trains');
+
+                $train = $trainTable->find()
+                    ->where(
+                        [
+                            'trains.id' => $id,
+                        ]
+                    )
+                    ->all();
+                $train = $train->first();
+                $tarif = $tarifTable->find()
+                        ->where(
+                            [
+                                'tarifs.id' => $id,
+                            ]
+                        )
+                        ->all();
+                $this->set('train', $train);
+                $this->set('prix_total', $tarif->prix);
+                $this->set([
+                    'date_depart' => $date_depart,
+                    'lieu_arriver' => $_SESSION['panier']['train']['lieu_arriver'],
+                    'lieu_depart' => $_SESSION['panier']['train']['lieu_depart']
+                ]);
+            }else{
+                $this->Flash->error('Plus de places disponibles, Merci d\'essayer une autre période.');
+                $this->redirect(['controller' => 'Reservations','action' => 'booking', 'train' => $id]);
+            }
+
+        }else{
+            $this->Flash->error('Panier Vide.');
+            $this->redirect(['controller' => 'Transports','action' => 'index', 'reset' => 'true']);
+        }
+    }
+
     public function bookingSucces(){
         $reservationTable = TableRegistry::get('Reservations');
     	$reservation = $reservationTable->find()
@@ -603,9 +336,9 @@ class ReservationsController extends AppController
             $this->set(compact('reservation'));
         }else{
         	 $this->Flash->error('Référence inexistante.');
-            $this->redirect(['controller' => 'Transports','action' => 'index', 'reset' => 'true']);
+            $this->redirect(['controller' => 'Booking','action' => 'index', 'reset' => 'true']);
         }
-        $id=intval($reservation->VehicleId);
+        $id=intval($reservation->TrainId);
         $trainTable = TableRegistry::get('trains');
 
         $train = $trainTable->find()
@@ -616,11 +349,11 @@ class ReservationsController extends AppController
             )
             ->all();
         $train=$train->first();
-        $nombre = $train->Nombre_reel - 1;
+        $nombre = $train->NombrePlace - 1;
         if ($nombre < 0) {
             $nombre = 0; 
         }
-        $train->Nombre_reel = $nombre;
+        $train->NombrePlace = $nombre;
         $trainTable->save($train);
 
         ///Vider le panier & la session

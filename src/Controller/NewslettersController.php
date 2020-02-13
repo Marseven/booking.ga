@@ -30,7 +30,7 @@ class NewslettersController extends AppController
             $newslettersTable = TableRegistry::get('Newsletters');
             $email = $newslettersTable->newEntity($this->request->getData());
             if($newslettersTable->save($email)){
-                $this->Flash->success('Bienvennue Dans La Newsletter De LTC !');
+                $this->Flash->success('Bienvennue Dans La Newsletter De Setrag !');
                 $this->redirect(['controller' => 'Annonces','action' => 'index']);
             }else{
                 $this->Flash->error('Désolé vous n\'avez pas pus être enregistrer dans la newsletter !');

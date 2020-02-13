@@ -28,12 +28,12 @@ class TemoignagesController extends AppController
 
     function menu(){
         $acc = '';
-        $veh = '';
+        $tra = '';
         $dms = '';
 
         $this->set(array(
             'acc' => $acc,
-            'veh' => $veh,
+            'tra' => $tra,
             'dms' => $dms,
         ));
     }

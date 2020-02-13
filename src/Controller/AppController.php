@@ -54,7 +54,7 @@ class AppController extends Controller
                 'action' => 'index/',
             ],
             'logoutRedirect' => [
-                'controller' => 'Transports',
+                'controller' => 'Booking',
                 'action' => 'index',
             ],
             'authError' => 'Enregistrez-vous ou Connectez-vous',

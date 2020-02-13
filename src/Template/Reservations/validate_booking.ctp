@@ -8,12 +8,12 @@
             <div class="col-md-9">
                 <div class="listing_detail_head row">
                     <div class="col-md-6">
-                        <h2><?php echo htmlentities($vehicule->marque->BrandName);?> , <?php echo htmlentities($vehicule->VehiclesTitle);?></h2>
+                        <h2><?php echo htmlentities($train->Title);?></h2>
                     </div>
                     <div class="col-md-6">
                         <div class="price_info">
-                            <p><?php echo htmlentities(\App\Controller\AppController::change_number_format($vehicule->PricePerDay));?> FCFA/J</p>
-                            <p><?= $vehicule->PricePerHour == 0 ? '' : \App\Controller\AppController::change_number_format($vehicule->PricePerHour).' FCFA/H' ?></p>
+                            <p><?php echo htmlentities(\App\Controller\AppController::change_number_format($train->PricePerDay));?> FCFA/J</p>
+                            <p><?= $train->PricePerHour == 0 ? '' : \App\Controller\AppController::change_number_format($train->PricePerHour).' FCFA/H' ?></p>
                         </div>
                     </div>
                 </div>
@@ -45,7 +45,7 @@
                                             </li>
                                             <li>
                                                 <i class="fa fa-tint" aria-hidden="true"></i>
-                                                <p><?php echo htmlentities($vehicule->FuelType);?></p>
+                                                <p><?php echo htmlentities($train->FuelType);?></p>
                                             </li>
                                         </ul>
                                     </div>
@@ -54,7 +54,7 @@
                                         <ul>
                                             <li>
                                                 <i class="fa fa-user-plus" aria-hidden="true"></i>
-                                                <p><?php echo htmlentities($vehicule->SeatingCapacity);?> Sièges</p>
+                                                <p><?php echo htmlentities($train->SeatingCapacity);?> Sièges</p>
                                             </li>
 
                                             <li>
@@ -63,7 +63,7 @@
                                             </li>
                                             <li>
                                                 <i class="fa fa-cogs" aria-hidden="true"></i>
-                                                <p><?= $vehicule->Transmission == 1 ? 'Automatique' : 'Manuel' ?></p>
+                                                <p><?= $train->Transmission == 1 ? 'Automatique' : 'Manuel' ?></p>
                                             </li>
                                         </ul>
                                     </div>
@@ -80,7 +80,7 @@
                                         <td align="center">Prix total</td>
                                     </tr>
                                     <tr>
-                                        <td align="center"><?php echo htmlentities($vehicule->marque->BrandName);?> , <?php echo htmlentities($vehicule->VehiclesTitle);?></td>
+                                        <td align="center"><?php echo htmlentities($train->marque->BrandName);?> , <?php echo htmlentities($train->VehiclesTitle);?></td>
                                         <td align="center"><?= $nbre_jour ?></td>
                                         <td align="center">
                                             <span class=""><?= \App\Controller\AppController::change_number_format($prix_total) ?></span>
@@ -122,7 +122,7 @@
                                     <input type="hidden" name="lieu_arriver" value="<?= $_SESSION['panier']['voiture']['lieu_arriver'] ?>">
                                     <input type="hidden" name="date_depart" value="<?= $_SESSION['panier']['voiture']['date_depart'] ?>">
                                     <input type="hidden" name="date_arriver" value="<?= $_SESSION['panier']['voiture']['date_arriver'] ?>">
-                                    <input type="hidden" name="voiture" value="<?= $vehicule->id ?>">
+                                    <input type="hidden" name="voiture" value="<?= $train->id ?>">
                                     <div class="divider"></div>
                                     <h6>Méthode de paiement</h6>
                                     <div class="form-group">
@@ -137,7 +137,7 @@
                                     </div>
                                     <div>
                                         <input type="submit" value="Continuer" name="Confirmer" id="submit" class="btn btn-sm btn-success">
-                                        <a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'vehiculeItem', 'vehicule' => $vehicule->id, 'reset' => 'true']) ?>"><button type="button" style="background-color: red; color: white;" class="btn btn-sm btn-danger">Annuler</button></a>
+                                        <a href="<?= $this->Url->build(['controller' => 'Transports', 'action' => 'trainItem', 'train' => $train->id, 'reset' => 'true']) ?>"><button type="button" style="background-color: red; color: white;" class="btn btn-sm btn-danger">Annuler</button></a>
                                     </div>
                                 </form>
                                 <br><br>

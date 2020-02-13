@@ -1,90 +1,159 @@
-<div class="content-wrapper">
-    <div class="container-fluid">
+<?= $this->Flash->render() ?>
 
-        <div class="row">
-            <?= $this->Flash->render() ?>
-            <div class="col-md-12">
-
-                <h2 class="page-title">Tableau de Bord</h2>
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="panel panel-default">
-                                    <div class="panel-body bk-primary text-light">
-                                        <div class="stat-panel text-center">
-                                            <div class="stat-panel-number h1 "><?php echo htmlentities($users->count());?></div>
-                                            <div class="stat-panel-title text-uppercase">Clients</div>
-                                        </div>
-                                    </div>
-                                    <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'listClient']) ?>" class="block-anchor panel-footer text-center">+ Details <i class="fa fa-arrow-right"></i></a>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="panel panel-default">
-                                    <div class="panel-body bk-success text-light">
-                                        <div class="stat-panel text-center">
-                                            <div class="stat-panel-number h1 "><?php echo htmlentities($vehicules->count());?></div>
-                                            <div class="stat-panel-title text-uppercase">Véhicules</div>
-                                        </div>
-                                    </div>
-                                    <a href="<?= $this->Url->build(['controller' => 'Vehicules', 'action' => 'index']) ?>" class="block-anchor panel-footer text-center">+ Details &nbsp; <i class="fa fa-arrow-right"></i></a>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="panel panel-default">
-                                    <div class="panel-body bk-info text-light">
-                                        <div class="stat-panel text-center">
-                                            <div class="stat-panel-number h1 "><?php echo htmlentities($reservations->count());?></div>
-                                            <div class="stat-panel-title text-uppercase">Réservations</div>
-                                        </div>
-                                    </div>
-                                    <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'reservations']) ?>" class="block-anchor panel-footer text-center">+ Details &nbsp; <i class="fa fa-arrow-right"></i></a>
-                                </div>
-                            </div>
-                            <div class="col-md-3">
-                                <div class="panel panel-default">
-                                    <div class="panel-body bk-warning text-light">
-                                        <div class="stat-panel text-center">
-                                            <div class="stat-panel-number h1 "><?php echo htmlentities($marques->count());?></div>
-                                            <div class="stat-panel-title text-uppercase">Marques</div>
-                                        </div>
-                                    </div>
-                                    <a href="<?= $this->Url->build(['controller' => 'Marques', 'action' => 'index']) ?>" class="block-anchor panel-footer text-center">+ Details &nbsp; <i class="fa fa-arrow-right"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-
-        <div class="row">
-            <div class="col-md-12">
-
-
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="row">
-                            <div class="col-md-3">
-                                <div class="panel panel-default">
-                                    <div class="panel-body bk-info text-light">
-                                        <div class="stat-panel text-center">
-                                            <div class="stat-panel-number h1 "><?php echo htmlentities($temoignages->count());?></div>
-                                            <div class="stat-panel-title text-uppercase">Témoignages</div>
-                                        </div>
-                                    </div>
-                                    <a href="<?= $this->Url->build(['controller' => 'Users', 'action' => 'temoignages']) ?>" class="block-anchor panel-footer text-center">+ Details &nbsp; <i class="fa fa-arrow-right"></i></a>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<!-- Page Header -->
+<div class="dt-page__header">
+    <h1 class="dt-page__title">Tableau de Bord</h1>
 </div>
+<!-- /page header -->
+
+<div class="row">
+
+    <!-- Grid Item -->
+    <div class="col-xl-3 col-sm-6">
+        <!-- Card -->
+        <div class="dt-card">
+
+            <!-- Card Body -->
+            <div class="dt-card__body d-flex flex-sm-column">
+                <div class="mb-sm-7 mr-7 mr-sm-0">
+                    <i class="icon icon-users dt-icon-bg bg-primary text-primary"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="h2 mb-0 font-weight-500 mr-2"><?php echo htmlentities($users->count());?></span>
+                    </div>
+                    <div class="h5 mb-2">Clients</div>
+                </div>
+            </div>
+            <!-- /card body -->
+
+        </div>
+        <!-- /card -->
+    </div>
+    <!-- /grid item -->
+
+    <!-- Grid Item -->
+    <div class="col-xl-3 col-sm-6">
+        <!-- Card -->
+        <div class="dt-card">
+
+            <!-- Card Body -->
+            <div class="dt-card__body d-flex flex-sm-column">
+                <div class="mb-sm-7 mr-7 mr-sm-0">
+                    <i class="icon icon-company dt-icon-bg bg-success text-success"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="h2 mb-0 font-weight-500 mr-2"><?php echo htmlentities($trains->count());?></span>
+                    </div>
+                    <div class="h5 mb-2">Trains</div>
+                </div>
+            </div>
+            <!-- /card body -->
+
+        </div>
+        <!-- /card -->
+    </div>
+    <!-- /grid item -->
+
+    <!-- Grid Item -->
+    <div class="col-xl-3 col-sm-6">
+        <!-- Card -->
+        <div class="dt-card">
+
+            <!-- Card Body -->
+            <div class="dt-card__body d-flex flex-sm-column">
+                <div class="mb-sm-7 mr-7 mr-sm-0">
+                    <i class="icon icon-customer dt-icon-bg bg-secondary text-secondary"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="h2 mb-0 font-weight-500 mr-2"><?php echo htmlentities($reservations->count());?></span>
+                    </div>
+                    <div class="h5 mb-2">Réservations</div>
+                </div>
+            </div>
+            <!-- /card body -->
+
+        </div>
+        <!-- /card -->
+    </div>
+    <!-- /grid item -->
+
+    <!-- Grid Item -->
+    <div class="col-xl-3 col-sm-6">
+        <!-- Card -->
+        <div class="dt-card">
+
+            <!-- Card Body -->
+            <div class="dt-card__body d-flex flex-sm-column">
+                <div class="mb-sm-7 mr-7 mr-sm-0">
+                    <i class="icon icon-revenue-new dt-icon-bg bg-orange text-orange"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="h2 mb-0 font-weight-500 mr-2">34567</span>
+                    </div>
+                    <div class="h5 mb-2">Villes</div>
+                </div>
+            </div>
+            <!-- /card body -->
+
+        </div>
+        <!-- /card -->
+    </div>
+    <!-- /grid item -->
+</div>
+<!-- /grid -->
+
+<div class="row">
+
+    <!-- Grid Item -->
+    <div class="col-xl-3 col-sm-6">
+        <!-- Card -->
+        <div class="dt-card">
+
+            <!-- Card Body -->
+            <div class="dt-card__body d-flex flex-sm-column">
+                <div class="mb-sm-7 mr-7 mr-sm-0">
+                    <i class="icon icon-users dt-icon-bg bg-primary text-primary"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="h2 mb-0 font-weight-500 mr-2">2500</span>
+                    </div>
+                    <div class="h5 mb-2">Classes</div>
+                </div>
+            </div>
+            <!-- /card body -->
+
+        </div>
+        <!-- /card -->
+    </div>
+    <!-- /grid item -->
+
+    <!-- Grid Item -->
+    <div class="col-xl-3 col-sm-6">
+        <!-- Card -->
+        <div class="dt-card">
+
+            <!-- Card Body -->
+            <div class="dt-card__body d-flex flex-sm-column">
+                <div class="mb-sm-7 mr-7 mr-sm-0">
+                    <i class="icon icon-company dt-icon-bg bg-success text-success"></i>
+                </div>
+                <div class="flex-1">
+                    <div class="d-flex align-items-center mb-2">
+                        <span class="h2 mb-0 font-weight-500 mr-2">2,45,855</span>
+                    </div>
+                    <div class="h5 mb-2">Catégories</div>
+                </div>
+            </div>
+            <!-- /card body -->
+
+        </div>
+        <!-- /card -->
+    </div>
+    <!-- /grid item -->
+</div>
+<!-- /grid -->

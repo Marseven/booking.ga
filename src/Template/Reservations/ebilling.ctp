@@ -8,7 +8,7 @@
             <div class="col-md-9">
                 <div class="listing_detail_head row">
                     <div class="col-md-6">
-                        <h2><?php echo htmlentities($vehicule->marque->BrandName);?> , <?php echo htmlentities($vehicule->VehiclesTitle);?></h2>
+                        <h2><?php echo htmlentities($train->VehiclesTitle);?></h2>
                     </div>
                     <div class="col-md-6">
                         <div class="price_info">
@@ -28,7 +28,7 @@
                                     <input type="hidden" name="date_depart" value="<?= $_SESSION['panier']['voiture']['date_depart'] ?>">
                                     <input type="hidden" name="date_arriver" value="<?= $_SESSION['panier']['voiture']['date_arriver'] ?>">
                                     <input type="hidden" name="montant" value="<?= $_SESSION['panier']['prix'] ?>">
-                                    <input type="hidden" name="voiture" value="<?= $vehicule->id ?>">
+                                    <input type="hidden" name="train" value="<?= $train->id ?>">
                                     <div class="row">
                                         <div class="col-sm-6">
                                             <div class="form-group">
@@ -87,19 +87,6 @@
                                         </div>
                                     </div>
                                     <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="form-group">
-                                                <label>Pays</label>
-                                                <select class="form-control" name="pays">
-                                                    <?php if(isset($user)){echo "<option>".$user['Contry']."</option>";} ?>
-                                                    <option>Gabon </option>
-                                                    <option>Cameroun</option>
-                                                    <option>France</option>
-                                                    <option>Etats-Unis</option>
-                                                    <option>Japon</option>
-                                                </select>
-                                            </div>
-                                        </div>
                                         <div class="col-sm-6">
                                             <div class="form-group">
                                                 <label>Date de naissance <span style="color: red;">*</span></label>

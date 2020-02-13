@@ -2,7 +2,6 @@
 namespace App\Controller\Admin;
 
 use App\Controller\AppController;
-use App\Model\Table\MarquesTable;
 use App\Model\Table\ReservationsTable;
 use Cake\Core\Configure;
 use Cake\ORM\TableRegistry;
@@ -34,8 +33,6 @@ class UsersController extends AppController {
             $user['reset_at'] = new FrozenTime($user['reset_at']);
             $this->set('user', $user);
         }
-        $marques = MarquesTable::marque();
-        $this->set(compact('marques'));
 
     }
 
@@ -55,6 +52,7 @@ class UsersController extends AppController {
 	
 	public function index(){
         $reservationTable = TableRegistry::get('Reservations');
+        $trainTable = TableRegistry::get('Trains');
         $reservations = $reservationTable->find()->all();
         $this->set('reservations', $reservations);
         $trains = $trainTable->find()->all();

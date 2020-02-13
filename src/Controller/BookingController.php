@@ -4,7 +4,6 @@ namespace App\Controller;
 use App\Controller\AppController;
 use App\Form\DemandeForm;
 use App\Form\ReservationForm;
-use App\Model\Table\MarquesTable;
 use Cake\Network\Session;
 use Cake\ORM\TableRegistry;
 use Cake\I18n\FrozenTime;
@@ -49,7 +48,7 @@ class BookingController extends AppController
 
         $this->set(array(
             'acc' => $acc,
-            'veh' => $tra,
+            'tra' => $tra,
             'dms' => $dms,
         ));
     }
@@ -104,20 +103,20 @@ class BookingController extends AppController
              }
         }
         if (isset($_POST['search']) && $_POST['search'] == 'autre') {
-            $classe = $_POST['classe'];
-            $type = $_POST['type'];
+            
             $trains_search = $trainTable->find()
                 ->where(
                     [
-                        'Classe' => $classe,
-                        'Type' => $type,
+                        'id_categorie' => $categorie,
+                        'id_semaine' => $jour,
                     ]
                 )
                 ->all();
             $trains_related = $trainTable->find()
                 ->where(
                     [
-                        'Type' => $type,
+                        'id_categorie' => $categorie,
+                        'id_semaine' => $jour,
                     ]
                 )
                 ->limit(5)
@@ -126,14 +125,13 @@ class BookingController extends AppController
                 'trains_search_a' => $trains_search,
             ]);
             $this->set('trains_related', $trains_related);
-        }elseif(isset($this->request->getData()['search']) && $this->request->getData()['search'] == 'Rechercher') {
-            $classe=$this->request->getData()['classe'];
-            $type=$this->request->getData()['type'];
+        }elseif(isset($this->request->getData()['search']) && $this->request->getData()['search'] == 'accueil') {
+            
             $trains_search = $trainTable->find()
                 ->where(
                     [
-                        'Type' => $type,
-                        'Classe' => $classe,
+                        'id_categorie' => $categorie,
+                        'id_semaine' => $jour,
                     ]
                 )
                 ->all();
@@ -143,15 +141,16 @@ class BookingController extends AppController
                 $data = [
                     'lieu_depart' => $this->request->getData()['lieu_depart'],
                     'lieu_arriver' => $this->request->getData()['lieu_arriver'],
+                    'classe' => $this->request->getData()['classe'],
                     'date_depart' => $this->request->getData()['date_depart'],
-                    'date_arriver' => $this->request->getData()['date_arriver'],
                 ];
             }
 
             $trains_related = $trainTable->find()
                 ->where(
                     [
-                        'Type' => $type,
+                        'id_categorie' => $categorie,
+                        'id_semaine' => $jour,
                     ]
                 )
                 ->limit(5)
@@ -214,7 +213,8 @@ class BookingController extends AppController
         $trains_related = $trainTable->find()
             ->where(
                 [
-                    'Type' => $train->Type,
+                    'id_categorie' => $train->id_categorie,
+                    'id_semaine' => $train->id_semaine,
                     'trains.id <>' => $train->id,
                 ]
             )
@@ -226,7 +226,7 @@ class BookingController extends AppController
                 'lieu_depart' => $this->request->getData()['lieu_depart'], 
                 'lieu_arriver' => $this->request->getData()['lieu_arriver'],
                 'date_depart' => $this->request->getData()['date_depart'],
-                'date_arriver' => $this->request->getData()['date_arriver'],
+                'classe' => $this->request->getData()['classe'],
             ];
             $this->set('data', $data);
         }

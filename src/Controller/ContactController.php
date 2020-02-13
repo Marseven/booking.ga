@@ -25,12 +25,12 @@ class ContactController extends AppController
     public function index()
     {
         $acc = '';
-        $veh = '';
+        $tra = '';
         $dms = '';
 
         $this->set(array(
             'acc' => $acc,
-            'veh' => $veh,
+            'tra' => $tra,
             'dms' => $dms,
         ));
 

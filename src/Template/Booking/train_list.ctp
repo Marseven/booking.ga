@@ -25,24 +25,28 @@
         <div class="row">
             <div class="col-lg-4">
                 <div class="right-shop">
-                    <div class="productsearchform perches-form-wrapper">
-                        <form class="form-wrap" action="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'searchResult']) ?>" method="post">
-                            <div class="form-group select">
-                                <select class="form-control" name="classe">
-                                    <option>VIP</option>
-                                    <option>Classe 1</option>
-                                    <option>Classe 2</option>
-                                </select>
-                            </div>
-                            <div class="form-group select">
-                                <select class="form-control" name="type">
-                                    <option>Express</option>
-                                    <option>Omnibus</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <button type="submit" name="search" value="autre" class="btn btn-block"><i class="fa fa-search" aria-hidden="true"></i> Rechercher </button>
-                            </div>
+                    <div class="productsearchform">
+                        <h3 style="text-align:center;">Recherche</h3>
+                        <form action="<?= $this->Url->build(['controller' => 'Booking', 'action' => 'searchResult']) ?>">
+                            <select class="form-control"  name="lieu_depart" style="width: 100%">
+                                <option value="Owendo">Owendo</option>
+                                <option value="Franceville">Franceville</option>
+                            </select>
+                            <br><br>
+                            <select class="form-control"  name="lieu_arrive" style="width: 100%">
+                                <option value="Owendo">Owendo</option>
+                                <option value="Franceville">Franceville</option>
+                            </select>
+                            <br><br>
+                            <select class="form-control" name="classe" style="width: 100%">
+                                <option>VIP</option>
+                                <option>Classe 1</option>
+                                <option>Classe 2</option>
+                            </select>
+                            <br><br>     
+                            <input type="date" class="form-control" name="date_depart" placeholder="Date de Départ">
+                            <br>
+                            <input type="submit" value="Rechercher" name="search" />
                         </form>
                     </div>
                 </div>

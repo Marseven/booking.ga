@@ -14,8 +14,8 @@ class ReservationsTable extends Table
         $this->belongsTo('Users')
             ->setForeignKey('userEmail') // Avant la version CakePHP 3.4, utilisez foreignKey() au lieu de setForeignKey()
             ->setJoinType('INNER');
-        $this->belongsTo('Vehicules')
-            ->setForeignKey('VehicleId') // Avant la version CakePHP 3.4, utilisez foreignKey() au lieu de setForeignKey()
+        $this->belongsTo('Trains')
+            ->setForeignKey('id') // Avant la version CakePHP 3.4, utilisez foreignKey() au lieu de setForeignKey()
             ->setJoinType('INNER');
     }
 
@@ -25,12 +25,12 @@ class ReservationsTable extends Table
 
         $reservations = $reservationTable->find()
                                         ->where([
-                                            'VehicleId' => $infos['vid'],
+                                            'id' => $infos['tid'],
                                         ])
                                         ->all();
 
         $id=intval($infos['vid']);
-        $vehiculeTable = TableRegistry::get('vehicules');
+        $vehiculeTable = TableRegistry::get('trains');
 
         $vehicule = $vehiculeTable->find()
                     ->where(

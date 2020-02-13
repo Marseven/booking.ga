@@ -14,11 +14,8 @@ class SearchForm extends Form
     {
         return $schema->addField('lieu_depart', 'string')
             ->addField('lieu_arriver', ['type' => 'string'])
-            ->addField('type', ['type' => 'string'])
-            ->addField('date_depart', ['type' => 'string'])
-            ->addField('date_arriver', ['type' => 'string'])
-            ->addField('marque', ['type' => 'string'])
-            ->addField('prix', ['type' => 'string']);
+            ->addField('classe', ['type' => 'string'])
+            ->addField('date_depart', ['type' => 'string']);
     }
 
     public function setErrors(array $errors)

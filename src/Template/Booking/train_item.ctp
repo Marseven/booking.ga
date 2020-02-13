@@ -105,14 +105,7 @@
                     
                     <div class="col-lg-4">
                         <div class="right-shop">
-                            <div class="productsearchform">
-                                <form action="#">
-                                    <input type="text" placeholder="Search Here">
-                                    <button type="submit">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </form>
-                            </div>
+                            
                             <div class="productsearchform">
                                 <form action="<?= $this->Url->build(['controller' => 'Reservations', 'action' => 'validateBooking', 'train' => $train->id]) ?>" method="post">
                                     <div class="form-group">

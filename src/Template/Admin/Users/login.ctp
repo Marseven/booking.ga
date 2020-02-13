@@ -1,89 +1,168 @@
-<!doctype html>
-<html lang="fr" class="no-js">
- 
+<!DOCTYPE html>
+<html lang="fr">
+
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1">
-    <meta name="description" content="Administration">
-    <meta name="author" content="JOBS CONSEIL">
-    <meta name="theme-color" content="#3e454c">
-    <?= $this->fetch('meta') ?>
+<!-- Meta tags -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="description" content="Site de réservation en ligne">
+<meta name="keywords" content="trains, reservation, en ligne">
+<!-- /meta tags -->
+<title> Setrag </title>
 
-    <title>Les Transports Citadins | Admin</title>
+<!-- Site favicon -->
+<link rel="shortcut icon" href="../assets/images/favicon.ico" type="image/x-icon">
+<!-- /site favicon -->
 
-    <!-- Font awesome -->
-    <?= $this->Html->css('admin/css/font-awesome.min.css') ?>
-    <!-- Sandstone Bootstrap CSS -->
-    <?= $this->Html->css('admin/css/bootstrap.min.css') ?>
-    <!-- Bootstrap Datatables -->
-    <?= $this->Html->css('admin/css/dataTables.bootstrap.min.css') ?>
-    <!-- Bootstrap social button library -->
-    <?= $this->Html->css('admin/css/bootstrap-social.css') ?>
-    <!-- Bootstrap select -->
-    <?= $this->Html->css('admin/css/bootstrap-select.css') ?>
-    <!-- Bootstrap file input -->
-    <?= $this->Html->css('admin/css/fileinput.min.css') ?>
-    <!-- Awesome Bootstrap checkbox -->
-    <?= $this->Html->css('admin/css/awesome-bootstrap-checkbox.css') ?>
-    <!-- Admin Stye -->
-    <?= $this->Html->css('admin/css/style.css') ?>
-    <?= $this->fetch('css') ?>
+<!-- Font Icon Styles -->
+<?= $this->Html->css('../admin/fonts/noir-pro/styles.css') ?>
+<?= $this->Html->css('../admin/plugins/flag-icon-css/css/flag-icon.min.css') ?>
+<?= $this->Html->css('../admin/vendor/gaxon-icon/styles.css') ?>
+<!-- /font icon Styles -->
 
-    <link rel="shortcut icon" href="/img/icone-ltc.png">
+<!-- Perfect Scrollbar stylesheet -->
+<?= $this->Html->css('../admin/plugins/perfect-scrollbar/css/perfect-scrollbar.css') ?>
+<!-- /perfect scrollbar stylesheet -->
+
+<?= $this->Html->css('../admin/plugins/owl.carousel/css/owl.carousel.min.css') ?>
+<?= $this->Html->css('../admin/plugins/chartist/css/chartist.min.css') ?>
+
+<?= $this->Html->css('../admin/css/back-office/theme.min.css') ?>
+
+<?= $this->fetch('css') ?>
+
+<script>
+    var rtlEnable = '';
+        var $mediaUrl = '../index.html';
+        var $baseUrl = '../index.html';
+    var current_path = window.location.href.split('../index.html').pop();
+    if (current_path == '') {
+        current_path = 'index-2.html';
+    }
+</script>
+
+<?= $this->Html->script('../admin/plugins/jquery/js/jquery.min.js') ?>
+<?= $this->Html->script('../admin/plugins/moment/js/moment.min.js') ?>
+<?= $this->Html->script('../admin/plugins/bootstrap/js/bootstrap.bundle.min.js') ?>
+<!-- Perfect Scrollbar jQuery -->
+<?= $this->Html->script('../admin/plugins/perfect-scrollbar/js/perfect-scrollbar.min.js') ?>
+<!-- /perfect scrollbar jQuery -->
 
 </head>
-
 <body>
-	
-	<div class="login-page bk-img" style="background-image: url(http://transports-citadins.jobs-conseil.com/images/banner-ltc-6.JPG);">
-		<div class="form-content">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-6 col-md-offset-3" style="background-color: rgba(228,228,228,0.94); border: 1px white; margin-top: 10%;">
-                        <h1 class="text-center text-bold text-light mt-4x" style="color: black;">Connexion</h1>
-                        <?= $this->Flash->render() ?>
-							<div class="col-md-8 col-md-offset-2">
-                            <?= $this->Form->create('User', ['url' => ['Controller' => 'Users','action' => 'login']]); ?>
-                                <?= $this->Form->input('Email', array(
-                                        'class' => 'form-control white_bg',
-                                        'placeholder' => 'Email',
-                                        'type' => 'text',
-                                        'label' => 'Email',
-                                    )); ?>
-                                <?= $this->Form->input('Password', array(
-                                        'class' => 'form-control white_bg',
-                                        'placeholder' => 'Mot de passe',
-                                        'type' => 'password',
-                                        'label' => 'Mot de Passe',
-                                    )); ?>
-                                <br> <br>
-                                <div class="form-group" style="text-align:center">
-                                    <?= $this->Form->input('Connexion', array(
-                                        'class' => 'btn btn-primary',
-                                        'id'    => 'connexion',
-                                        'type'  => 'submit',
-                                        'label' => ''
-                                    )); ?>
-                                </div>
-                            <?= $this->Form->end(); ?>            
-							</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-	
-<!-- Loading Scripts -->
-<?= $this->Html->script('http://code.jquery.com/jquery.min.js') ?>
-<?= $this->Html->script('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js') ?>
-<?= $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/bootstrap-select/1.13.0/js/bootstrap-select.min.js') ?>
-<?= $this->Html->script('https://cdn.datatables.net/1.10.2/js/jquery.dataTables.min.js') ?>
-<?= $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/datatables/1.10.16/js/dataTables.bootstrap.min.js') ?>
-<?= $this->Html->script('https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js') ?>
-<?= $this->Html->script('admin/js/fileinput.js') ?>
-<?= $this->Html->script('admin/js/chartData.js') ?>
-<?= $this->Html->script('admin/js/main.js') ?>
+
+   <!-- Loader -->
+   <div class="dt-loader-container">
+  <div class="dt-loader">
+    <svg class="circular" viewBox="25 25 50 50">
+      <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"></circle>
+    </svg>
+  </div>
+</div>
+<!-- /loader -->
+    <!-- Root -->
+    <div class="dt-root">
+        <div class="dt-root__inner">
+            <div class="dt-login--container">
+
+    <!-- Login Content -->
+    <div class="dt-login__content-wrapper">
+
+        <!-- Login Background Section -->
+        <div class="dt-login__bg-section">
+
+            <div class="dt-login__bg-content">
+                <!-- Login Title -->
+                <h1 class="dt-login__title">Connexion</h1>
+                <!-- /login title -->
+
+                <p class="f-16">Gérer les réservations des Billets</p>
+            </div>
+
+
+            <!-- Brand logo -->
+            <div class="dt-login__logo">
+                <a class="dt-brand__logo-link" href="index-2.html">
+                    <img class="dt-brand__logo-img" src="../assets/images/logo-white.png" alt="Drift">
+                </a>
+            </div>
+            <!-- /brand logo -->
+
+        </div>
+        <!-- /login background section -->
+
+        <!-- Login Content Section -->
+        <div class="dt-login__content">
+            <?= $this->Flash->render() ?>
+            <!-- Login Content Inner -->
+            <div class="dt-login__content-inner">
+
+                <!-- Form -->
+                <?= $this->Form->create('User', ['url' => ['Controller' => 'Users','action' => 'login']]); ?>
+
+                    <!-- Form Group -->
+                    <div class="form-group">
+                        <?= $this->Form->input('Email', array(
+                                'class' => 'form-control',
+                                'placeholder' => 'Email',
+                                'type' => 'email',
+                                'label' => 'Email',
+                                'id' => 'email-1',
+                                'aria-describedby' => 'email-1',
+                            )); ?>
+                    </div>
+                    <!-- /form group -->
+
+                    <!-- Form Group -->
+                    <div class="form-group">
+                        <?= $this->Form->input('Password', array(
+                                'class' => 'form-control',
+                                'placeholder' => 'Password',
+                                'type' => 'password',
+                                'label' => 'Mot de Passe',
+                                'id' => 'password-1',
+                            )); ?>
+                    </div>
+                    <!-- /form group -->
+
+
+                    <!-- Form Group -->
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary text-uppercase">Connexion</button>
+                    </div>
+                    <!-- /form group -->
+
+                <?= $this->Form->end(); ?>
+                <!-- /form -->
+
+            </div>
+            <!-- /login content inner -->
+
+        </div>
+        <!-- /login content section -->
+
+    </div>
+    <!-- /login content -->
+
+</div>        
+</div>        
+    </div>
+    <!-- /root -->
+
+        
+<?= $this->Html->script('../admin/plugins/masonry-layout/js/masonry.pkgd.min.js') ?>
+<?= $this->Html->script('../admin/plugins/sweetalert2/js/sweetalert2.js') ?>
+<?= $this->Html->script('../admin/js/back-office/functions.js') ?>
+<?= $this->Html->script('../admin/js/back-office/customizer.js') ?>
+
+<?= $this->Html->script('../admin/js/back-office/script.js') ?>
+<?= $this->Html->script('../admin/plugins/chartist/js/chartist.min.js') ?>
+<?= $this->Html->script('../admin/plugins/owl.carousel/js/owl.carousel.min.js') ?>
+<?= $this->Html->script('../admin/js/global/charts/dashboard-listing.js') ?>
+
+<?= $this->fetch('script') ?>
 
 </body>
 

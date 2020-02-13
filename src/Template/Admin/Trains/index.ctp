@@ -1,63 +1,98 @@
-<div class="content-wrapper">
-    <div class="container-fluid">
-        <div class="row">
-            <?= $this->Flash->render() ?>
-            <div class="col-md-12">
-                <h2 class="page-title">Gestion des Véhicules</h2>
+<?= $this->Html->css('../admin/plugins/datatables.net-bs4/css/dataTables.bootstrap4.css', ['block' => true]) ?>
 
-                <!-- Zero Configuration Table -->
-                <div class="panel panel-default">
-                    <div class="panel-heading">Détails du Véhicule</div>
-                    <div class="panel-body">
-                        <table id="zctb" class="display table table-striped table-bordered table-hover" cellspacing="0" width="100%">
-                            <thead>
-                                <tr>
+<?= $this->Flash->render() ?>
+
+<div class="dt-page__header">
+    <h1 class="dt-page__title">Gestion des Trains</h1>
+</div>
+<!-- /page header -->
+
+<!-- Grid -->
+<div class="row">
+
+    <!-- Grid Item -->
+    <div class="col-xl-12">
+
+        <!-- Entry Header -->
+        <div class="dt-entry__header">
+
+            <!-- Entry Heading -->
+            <div class="dt-entry__heading">
+                <h3 class="dt-entry__title">Trains</h3>
+            </div>
+            <!-- /entry heading -->
+
+        </div>
+        <!-- /entry header -->
+
+        <!-- Card -->
+        <div class="dt-card">
+
+            <!-- Card Body -->
+            <div class="dt-card__body">
+
+                <!-- Tables -->
+                <div class="table-responsive">
+
+                    <table id="data-table"
+                           class="table table-striped table-bordered table-hover">
+                        <thead>
+                            <tr>
                                 <th>#</th>
-                                    <th>Titre</th>
-                                    <th>Marque </th>
-                                    <th>Prix par Jour</th>
-                                    <th>Consommation</th>
-                                    <th>Nombre</th>
-                                    <th>Nombre Réel</th>
-                                    <th>Année</th>
-                                    <th>Action</th>
-                                </tr>
-                            </thead>
-                            <tfoot>
-                                <tr>
-                                <th>#</th>
-                                    <th>Titre</th>
-                                    <th>Marque </th>
-                                    <th>Prix par Jour</th>
-                                    <th>Consommation</th>
-                                    <th>Nombre</th>
-                                    <th>Nombre Réel</th>
-                                    <th>Année</th>
-                                    <th>Action</th>
-                                </tr>
-                            </tfoot>
-                            <tbody>
-                            <?php foreach($vehicules as $vehicule){	?>	
-                                <tr>
-                                    <td><?php echo htmlentities($vehicule->id);?></td>
-                                    <td><?php echo htmlentities($vehicule->VehiclesTitle);?></td>
-                                    <td><?php echo htmlentities($vehicule->marque->BrandName);?></td>
-                                    <td><?php echo htmlentities($vehicule->PricePerDay);?></td>
-                                    <td><?php echo htmlentities($vehicule->FuelType);?></td>
-                                    <td><?php echo htmlentities($vehicule->Nombre);?></td>
-                                    <td><?php echo htmlentities($vehicule->Nombre_reel);?></td>
-                                    <td><?php echo htmlentities($vehicule->ModelYear);?></td>
+                                <th>Titre</th>
+                                <th>Catégorie </th>
+                                <th>Jour</th>
+                                <th>Nombre Place</th>
+                                <th>Nombre Wagon</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <?php foreach($trains as $train){	?>	
+                                <tr class="gradeX">
+                                    <td><?php echo htmlentities($train->id);?></td>
+                                    <td><?php echo htmlentities($train->VehiclesTitle);?></td>
+                                    <td><?php echo htmlentities($train->categorie->libelle);?></td>
+                                    <td><?php echo htmlentities($train->semaine->jour);?></td>
+                                    <td><?php echo htmlentities($train->NombrePlace);?></td>
+                                    <td><?php echo htmlentities($train->NombreVagon);?></td>
                                     <td>
-                                        <a href="<?= $this->Url->build(['controller' => 'Vehicules', 'action' => 'edit', 'vehicule' => $vehicule->id]) ?>"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
-                                        <a href="<?= $this->Url->build(['controller' => 'Vehicules', 'action' => 'delete', 'vehicule' => $vehicule->id]) ?>" onclick="return confirm('Voulez-vous vraiment le supprimé');"><i class="fa fa-close"></i></a>
+                                        <a href="<?= $this->Url->build(['controller' => 'Trains', 'action' => 'edit', 'train' => $train->id]) ?>"><i class="fa fa-edit"></i></a>&nbsp;&nbsp;
+                                        <a href="<?= $this->Url->build(['controller' => 'Trains', 'action' => 'delete', 'train' => $train->id]) ?>" onclick="return confirm('Voulez-vous vraiment le supprimé');"><i class="fa fa-close"></i></a>
                                     </td>
                                 </tr>
                             <?php } ?> 
-                            </tbody>
-                        </table>
-                    </div>
+                            
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>#</th>
+                                <th>Titre</th>
+                                <th>Catégorie </th>
+                                <th>Jour</th>
+                                <th>Nombre Place</th>
+                                <th>Nombre Wagon</th>
+                                <th>Action</th>
+                            </tr>
+                        </tfoot>
+                    </table>
+
                 </div>
+                <!-- /tables -->
+
             </div>
+            <!-- /card body -->
+
         </div>
+        <!-- /card -->
+
     </div>
+    <!-- /grid item -->
+
 </div>
+<!-- /grid -->                    </div>
+
+<?= $this->Html->script('../admin/plugins/datatables.net/js/jquery.dataTables.js', ['block' => true]) ?>
+<?= $this->Html->script('../admin/plugins/datatables.net-bs4/js/dataTables.bootstrap4.js', ['block' => true]) ?>
+<?= $this->Html->script('../admin/js/global/data-table.js', ['block' => true]) ?>
